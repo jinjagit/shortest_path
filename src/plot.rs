@@ -1,8 +1,8 @@
 use plotters::prelude::*;
 
 pub fn plot(
-    line_coords: std::vec::Vec<(f32, f32)>,
-    point_coords: std::vec::Vec<(f32, f32)>,
+
+    point_coords: std::vec::Vec<(f32, f32)>
 ) -> Result<(), Box<dyn std::error::Error>> {
     let root = BitMapBackend::new("images/5.png", (1280, 1280)).into_drawing_area();
     root.fill(&WHITE).unwrap();
@@ -28,16 +28,20 @@ pub fn plot(
         .draw()?;
 
     // And we can draw something in the drawing area
+    let mut line_coords = point_coords.clone();
+    line_coords.push(point_coords[0]);
+
     chart.draw_series(LineSeries::new(line_coords, &RED))?;
+
     // Similarly, we can draw point series
     chart.draw_series(PointSeries::of_element(
         point_coords,
         5, // Size of point
-        &RED,
+        &BLACK,
         &|c, s, st| {
             return EmptyElement::at(c)    // We want to construct a composed element on-the-fly
             + Circle::new((0,0),s,st.filled()) // At this point, the new pixel coordinate is established
-            + Text::new(format!("{:?}", c), (10, 0), ("sans-serif", 10).into_font());
+            // + Text::new(format!("{:?}", c), (10, 0), ("sans-serif", 10).into_font());
         },
     ))?;
     Ok(())
