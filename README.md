@@ -20,6 +20,6 @@ Step 1 would generate the following permutations, given a set of coords `[a, b, 
 [a, d, c, b]
 ```
 And creating the full path would involve adding the start point to the end of each list.
-For example [a, d, b, c] becomes [a, d, b, c, a]
+For example `[a, d, b, c]` becomes `[a, d, b, c, a]`
 
 Steps 2 & 3 involve iterating over each generated list, calculating and summing the distances between each pair of points taken in sequence, and returning the set that gave the shortest total distance (and that distance)
