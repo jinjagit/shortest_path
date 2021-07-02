@@ -37,7 +37,13 @@ a----------b
 |          |
 d----------c
 ```
-I _think_ we just want the first half of the set of permutations. [Confirmed there are pairs of equivalent paths, but using `.permutations(indices.len()).unique()` does not always neatly divide these into two 'halves' of the list of permutations]
+I _think_ we just want half of the set of permutations. [Confirmed there are pairs of equivalent paths, but using `.permutations(indices.len()).unique()` does not always neatly divide these into two 'halves' of the list of permutations]
+
+TODO: Filter out the equivalent paths to leave only unique paths. (Even better = figure out mathematically how to only generate the unique ones, which means reliquishing the handy `permutations...unique()` helper)
+
+TODO: Cache distances calculated between 2 points, as same 2 points will be considered more than once in any reasonable large collection of points (and possibly many times for large collections)
+
+TODO: Benchmark pristine non-optimized brute-force solution, for comparison with attempted optimized versions.
 
 This gives us (n - 1)! / 2 permutations for n points.
 
