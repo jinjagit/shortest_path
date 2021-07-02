@@ -161,6 +161,11 @@ dependencies = [
 ]
 
 [[package]]
+name = "either"
+version = "1.6.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+
+[[package]]
 name = "expat-sys"
 version = "2.1.6"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -262,6 +267,14 @@ dependencies = [
  "num-rational 0.3.2 (registry+https://github.com/rust-lang/crates.io-index)",
  "num-traits 0.2.14 (registry+https://github.com/rust-lang/crates.io-index)",
  "png 0.16.8 (registry+https://github.com/rust-lang/crates.io-index)",
+]
+
+[[package]]
+name = "itertools"
+version = "0.10.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+dependencies = [
+ "either 1.6.1 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
 
 [[package]]
@@ -511,6 +524,7 @@ dependencies = [
 name = "shortest_path"
 version = "0.1.0"
 dependencies = [
+ "itertools 0.10.1 (registry+https://github.com/rust-lang/crates.io-index)",
  "plotters 0.3.1 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
 
@@ -684,6 +698,7 @@ dependencies = [
 "checksum dirs-next 2.0.0 (registry+https://github.com/rust-lang/crates.io-index)" = "b98cf8ebf19c3d1b223e151f99a4f9f0690dca41414773390fc824184ac833e1"
 "checksum dirs-sys-next 0.1.2 (registry+https://github.com/rust-lang/crates.io-index)" = "4ebda144c4fe02d1f7ea1a7d9641b6fc6b580adcfa024ae48797ecdeb6825b4d"
 "checksum dwrote 0.11.0 (registry+https://github.com/rust-lang/crates.io-index)" = "439a1c2ba5611ad3ed731280541d36d2e9c4ac5e7fb818a27b604bdc5a6aa65b"
+"checksum either 1.6.1 (registry+https://github.com/rust-lang/crates.io-index)" = "e78d4f1cc4ae33bbfc157ed5d5a5ef3bc29227303d595861deb238fcec4e9457"
 "checksum expat-sys 2.1.6 (registry+https://github.com/rust-lang/crates.io-index)" = "658f19728920138342f68408b7cf7644d90d4784353d8ebc32e7e8663dbe45fa"
 "checksum float-ord 0.2.0 (registry+https://github.com/rust-lang/crates.io-index)" = "7bad48618fdb549078c333a7a8528acb57af271d0433bdecd523eb620628364e"
 "checksum font-kit 0.10.1 (registry+https://github.com/rust-lang/crates.io-index)" = "46c9a156ec38864999bc9c4156e5f3b50224d4a5578028a64e5a3875caa9ee28"
@@ -694,6 +709,7 @@ dependencies = [
 "checksum getrandom 0.2.3 (registry+https://github.com/rust-lang/crates.io-index)" = "7fcd999463524c52659517fe2cea98493cfe485d10565e7b0fb07dbba7ad2753"
 "checksum gif 0.11.2 (registry+https://github.com/rust-lang/crates.io-index)" = "5a668f699973d0f573d15749b7002a9ac9e1f9c6b220e7b165601334c173d8de"
 "checksum image 0.23.14 (registry+https://github.com/rust-lang/crates.io-index)" = "24ffcb7e7244a9bf19d35bf2883b9c080c4ced3c07a9895572178cdb8f13f6a1"
+"checksum itertools 0.10.1 (registry+https://github.com/rust-lang/crates.io-index)" = "69ddb889f9d0d08a67338271fa9b62996bc788c7796a5c18cf057420aaed5eaf"
 "checksum jpeg-decoder 0.1.22 (registry+https://github.com/rust-lang/crates.io-index)" = "229d53d58899083193af11e15917b5640cd40b29ff475a1fe4ef725deb02d0f2"
 "checksum js-sys 0.3.51 (registry+https://github.com/rust-lang/crates.io-index)" = "83bdfbace3a0e81a4253f73b49e960b053e396a11012cbd49b9b74d6a2b67062"
 "checksum lazy_static 1.4.0 (registry+https://github.com/rust-lang/crates.io-index)" = "e2abad23fbc42b3700f2f279844dc832adb2b2eb069b2df918f455c4e18cc646"
