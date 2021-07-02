@@ -4,7 +4,7 @@ pub fn plot(
     best_path: std::vec::Vec<(f32, f32)>,
     mut worst_path: std::vec::Vec<(f32, f32)>,
 ) -> Result<(), Box<dyn std::error::Error>> {
-    let root = BitMapBackend::new("images/5.png", (2560, 1280)).into_drawing_area();
+    let root = BitMapBackend::new("images/plot.png", (2560, 1280)).into_drawing_area();
     root.fill(&WHITE).unwrap();
     let root = root.margin(10, 10, 10, 20);
     let mut chart = ChartBuilder::on(&root)
