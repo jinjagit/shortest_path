@@ -371,13 +371,6 @@ version = "0.3.19"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 
 [[package]]
-name = "plot"
-version = "0.1.0"
-dependencies = [
- "plotters 0.3.1 (registry+https://github.com/rust-lang/crates.io-index)",
-]
-
-[[package]]
 name = "plotters"
 version = "0.3.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -512,6 +505,13 @@ dependencies = [
  "expat-sys 2.1.6 (registry+https://github.com/rust-lang/crates.io-index)",
  "freetype-sys 0.13.1 (registry+https://github.com/rust-lang/crates.io-index)",
  "pkg-config 0.3.19 (registry+https://github.com/rust-lang/crates.io-index)",
+]
+
+[[package]]
+name = "shortest_path"
+version = "0.1.0"
+dependencies = [
+ "plotters 0.3.1 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
 
 [[package]]

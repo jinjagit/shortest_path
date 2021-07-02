@@ -4,7 +4,7 @@ pub fn plot(
     line_coords: std::vec::Vec<(f32, f32)>,
     point_coords: std::vec::Vec<(f32, f32)>,
 ) -> Result<(), Box<dyn std::error::Error>> {
-    let root = BitMapBackend::new("images/5.png", (640, 640)).into_drawing_area();
+    let root = BitMapBackend::new("images/5.png", (1280, 1280)).into_drawing_area();
     root.fill(&WHITE).unwrap();
     let root = root.margin(10, 10, 10, 20);
     // After this point, we should be able to draw construct a chart context

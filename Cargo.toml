@@ -1,5 +1,5 @@
 [package]
-name = "plot"
+name = "shortest_path"
 version = "0.1.0"
 authors = ["Simon Tharby <simon@liquidvoting.io>"]
 edition = "2018"
