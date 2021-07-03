@@ -39,7 +39,7 @@ d----------c
 ```
 I _think_ we just want half of the set of permutations. [Confirmed there are pairs of equivalent paths, but using `.permutations(indices.len()).unique()` does not always neatly divide these into two 'halves' of the list of permutations]
 
-TODO: Filter out the equivalent paths to leave only unique paths. (Even better = figure out mathematically how to only generate the unique ones, which means reliquishing the handy `permutations...unique()` helper)
+TODO: Filter out the equivalent paths to leave only unique paths. (Even better = figure out mathematically how to only generate the unique ones, which means reliquishing the handy `permutations...unique()` helper. But, I have a hunch this effort is not worth it. Simply filtering out duplicates will be less efficient, but I bet the main performace hit is calculating the distances, so any improvement here will make little difference with larger collections. Benchmarking will probably clarify this.)
 
 TODO: Cache distances calculated between 2 points, as same 2 points will be considered more than once in any reasonable large collection of points (and possibly many times for large collections)
 
