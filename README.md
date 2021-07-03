@@ -48,3 +48,10 @@ TODO: Benchmark pristine non-optimized brute-force solution, for comparison with
 This gives us (n - 1)! / 2 permutations for n points.
 
 Steps 2 & 3 involve iterating over each generated list, calculating and summing the distances between each pair of points taken in sequence, and returning the set that gave the shortest total distance (and that distance)
+
+## Benchmarks:
+
+Using [Criterion crate](https://bheisler.github.io/criterion.rs/book/getting_started.html).
+Also installed [cargo-criterion plugin](https://github.com/bheisler/cargo-criterion).
+
+To run: `$ cargo criterion`
