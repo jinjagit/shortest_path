@@ -30,7 +30,7 @@ But, actually, there are equivalent pairs of generated paths here (when we conne
 [a, b, c, d, a]
 [a, d, c, b, a]
 ```
-... are equivalent paths (just traversed in different orders):
+... are equivalent paths (just traversed in opposite directions):
 ```
 a----------b
 |          |

@@ -8,9 +8,9 @@ fn main() {
     let mut coords: Vec<(f32, f32)> = vec![];
 
     let mut rng = rand::thread_rng();
-    let n = 10; // Number of points we want to use
+    let n = 5; // Number of points we want to use
 
-    for _ in 0..n + 1 {
+    for _ in 0..n {
         let x: f32 = rng.gen();
         let y: f32 = rng.gen();
         coords.push((x, y));
@@ -18,12 +18,12 @@ fn main() {
 
     println!("{:?}\n", coords);
 
-    // Let's find all permutations of a vec
+    // Find all permutations of a vec
     let mut indices: Vec<usize> = vec![];
 
-    // create vec of indices 1..n-1
-    for i in 0..n - 1 {
-        indices.push(i + 1);
+    // Create vec of indices 1..n-1
+    for i in 1..n {
+        indices.push(i);
     }
 
     let mut count: u32 = 0;
@@ -32,19 +32,21 @@ fn main() {
     let mut shortest: f32 = 999999.9;
     let mut longest: f32 = 0.0;
 
-    // create all permutations of indices 0 << 1..n-1
-    // Remove duplicate routes (inverse ordering of a route == duplicate effective route):
-    // iterate 1/2 length of list times
-    // compare 0 with 1..last, until match (reverse) found, remove match, break
-    // compare 1 with 2.. last, etc.
+    // Create all permutations of indices 1..n
+    // Remove duplicate routes (inverse ordering of a route == effective duplicate of route):
+    // Iterate 1/2 length of list times
+    // Compare 0 with 1..last, until match (reverse) found, remove match, break
+    // Compare 1 with 2.. last, etc.
 
-    // create all permutations of indices 0 << 1..n-1
+    // Create all permutations of indices 1..n
     for perm in indices.iter().permutations(indices.len()).unique() {
         let mut p = perm.clone();
         let mut path: Vec<&usize> = vec![&0];
         path.append(&mut p);
 
         let mut total_d: f32 = 0.0;
+
+        //println!("path: {:?}", path);
 
         for i in 0..path.len() - 1 {
             total_d += distance(coords[*path[i]], coords[*path[i + 1]]);
@@ -54,10 +56,10 @@ fn main() {
 
         if total_d < shortest {
             shortest = total_d;
-            best_path = perm.clone();
+            best_path = path.clone();
         } else if total_d > longest {
             longest = total_d;
-            worst_path = perm.clone();
+            worst_path = path.clone();
         }
 
         count += 1;
@@ -95,3 +97,7 @@ pub fn distance(point_a: (f32, f32), point_b: (f32, f32)) -> f32 {
 
     return ((dx * dx) + (dy * dy)).sqrt();
 }
+
+// 0, 2
+
+// [(0, 1, 9.9876).....     ]
