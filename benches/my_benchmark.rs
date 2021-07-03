@@ -5,14 +5,7 @@ use std::time::Duration;
 
 fn brute_unoptimized(coords: Vec<(f32, f32)>) -> (Vec<(f32, f32)>, f32, u32) {
     let n = coords.len(); // Number of points provided
-
-    // Find all permutations of a vec
-    let mut indices: Vec<usize> = vec![];
-
-    // Create vec of indices 1..n-1
-    for i in 1..n {
-        indices.push(i);
-    }
+    let indices: Vec<usize> = create_indices_vec(n);
 
     let mut count: u32 = 0;
     let mut best_path: Vec<&usize> = vec![];
@@ -42,8 +35,6 @@ fn brute_unoptimized(coords: Vec<(f32, f32)>) -> (Vec<(f32, f32)>, f32, u32) {
 
     return (reorder_coords(coords, best_path), shortest, count);
 }
-
-
 
 /// Utils:
 
@@ -75,13 +66,23 @@ pub fn distance(point_a: (f32, f32), point_b: (f32, f32)) -> f32 {
 pub fn reorder_coords(coords: Vec<(f32, f32)>, best_path: Vec<&usize>) -> Vec<(f32, f32)> {
     let mut best_path_coords: Vec<(f32, f32)> = vec![];
 
-      for e in best_path {
-          best_path_coords.push(coords[*e]);
-      }
+    for e in best_path {
+        best_path_coords.push(coords[*e]);
+    }
 
-      best_path_coords
-  }
+    best_path_coords
+}
 
+// Return vec indices, starting at 1, and ending at n - 1.
+pub fn create_indices_vec(n: usize) -> Vec<usize> {
+    let mut indices: Vec<usize> = vec![];
+
+    for i in 1..n {
+        indices.push(i);
+    }
+
+    indices
+}
 
 /// Run the Criterion benchmark
 
@@ -89,11 +90,15 @@ fn criterion_benchmark(c: &mut Criterion) {
     let n = 10; // Number of points we want
     let coords: Vec<(f32, f32)> = create_points(n);
 
-    c.bench_function("brute-force 10", |b| b.iter(|| brute_unoptimized(black_box(coords.clone()))));
+    c.bench_function("brute-force 10", |b| {
+        b.iter(|| brute_unoptimized(black_box(coords.clone())))
+    });
 }
 
 fn set_target_time() -> Criterion {
-    Criterion::default().measurement_time(Duration::new(15, 0)).sample_size(50)
+    Criterion::default()
+        .measurement_time(Duration::new(15, 0))
+        .sample_size(50)
 }
 
 criterion_group! {

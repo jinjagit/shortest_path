@@ -1,5 +1,5 @@
-mod plot;
 mod brute_force;
+mod plot;
 
 use rand::prelude::*;
 
@@ -8,7 +8,8 @@ fn main() {
     let n = 5; // Number of points we want
     let coords: Vec<(f32, f32)> = create_points(n);
 
-    let (best_path_coords, shortest, count): (Vec<(f32, f32)>, f32, u32) = brute_force::brute_unoptimized(coords);
+    let (best_path_coords, shortest, count): (Vec<(f32, f32)>, f32, u32) =
+        brute_force::brute_unoptimized(coords);
 
     println!("permutations (n - 1)! = {:?}", count);
     println!("shortest = {:?}", shortest);
@@ -28,4 +29,4 @@ pub fn create_points(n: usize) -> Vec<(f32, f32)> {
     }
 
     coords
-  }
+}

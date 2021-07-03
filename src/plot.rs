@@ -1,8 +1,7 @@
 use plotters::prelude::*;
 
 pub fn plot(
-    best_path: std::vec::Vec<(f32, f32)>
-    // mut worst_path: std::vec::Vec<(f32, f32)>,
+    best_path: std::vec::Vec<(f32, f32)>, // mut worst_path: std::vec::Vec<(f32, f32)>,
 ) -> Result<(), Box<dyn std::error::Error>> {
     let root = BitMapBackend::new("images/plot.png", (1280, 1280)).into_drawing_area();
     root.fill(&WHITE).unwrap();
