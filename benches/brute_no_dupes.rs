@@ -3,7 +3,7 @@ use itertools::Itertools;
 use rand::prelude::*;
 use std::time::Duration;
 
-fn brute_unoptimized(coords: Vec<(f32, f32)>) -> (Vec<(f32, f32)>, f32, u32) {
+fn brute_no_duplicates(coords: Vec<(f32, f32)>) -> (Vec<(f32, f32)>, f32, u32) {
     let n = coords.len(); // Number of points provided
     let indices: Vec<usize> = create_indices_vec(n);
 
@@ -11,8 +11,19 @@ fn brute_unoptimized(coords: Vec<(f32, f32)>) -> (Vec<(f32, f32)>, f32, u32) {
     let mut best_path: Vec<&usize> = vec![];
     let mut shortest: f32 = 999999.9;
 
-    // iterate over permutations of indices 1..n
-    for perm in indices.iter().permutations(indices.len()).unique() {
+    // Create all permutations of indices 1..n
+    let mut perms: Vec<Vec<&usize>> = indices
+        .iter()
+        .permutations(indices.len())
+        .unique()
+        .collect();
+
+    // Remove duplicate routes (inverse ordering of a route == effective duplicate of route)
+    // One way to do this is to only accept permutations where first value < last value,
+    // in the case of ordered sequential integers
+    perms.retain(|p| p[0] < p[n - 2]);
+
+    for perm in perms {
         let mut p = perm.clone();
         let mut path: Vec<&usize> = vec![&0];
         path.append(&mut p);
@@ -35,7 +46,6 @@ fn brute_unoptimized(coords: Vec<(f32, f32)>) -> (Vec<(f32, f32)>, f32, u32) {
 
     return (reorder_coords(coords, best_path), shortest, count);
 }
-
 
 /// Utils:
 
@@ -91,8 +101,8 @@ fn criterion_benchmark(c: &mut Criterion) {
     let n = 10; // Number of points we want
     let coords: Vec<(f32, f32)> = create_points(n);
 
-    c.bench_function("brute-force 10", |b| {
-        b.iter(|| brute_unoptimized(black_box(coords.clone())))
+    c.bench_function("brute-no-dupes 10", |b| {
+        b.iter(|| brute_no_duplicates(black_box(coords.clone())))
     });
 }
 

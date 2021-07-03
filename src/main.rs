@@ -9,9 +9,9 @@ fn main() {
     let coords: Vec<(f32, f32)> = create_points(n);
 
     let (best_path_coords, shortest, count): (Vec<(f32, f32)>, f32, u32) =
-        brute_force::brute_unoptimized(coords);
+        brute_force::brute_no_duplicates(coords);
 
-    println!("permutations (n - 1)! = {:?}", count);
+    println!("permutations (n - 1)! / 2 = {:?}", count);
     println!("shortest = {:?}", shortest);
 
     // Create chart of shortest path

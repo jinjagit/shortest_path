@@ -39,11 +39,14 @@ d----------c
 ```
 I _think_ we just want half of the set of permutations. [Confirmed there are pairs of equivalent paths, but using `.permutations(indices.len()).unique()` does not always neatly divide these into two 'halves' of the list of permutations]
 
-TODO: Filter out the equivalent paths to leave only unique paths. (Even better = figure out mathematically how to only generate the unique ones, which means reliquishing the handy `permutations...unique()` helper. But, I have a hunch this effort is not worth it. Simply filtering out duplicates will be less efficient, but I bet the main performace hit is calculating the distances, so any improvement here will make little difference with larger collections. Benchmarking will probably clarify this.)
+DONE: Benchmark pristine non-optimized brute-force solution, for comparison with attempted optimized versions.
+
+DONE: Filter out the equivalent paths to leave only unique paths. [EDIT: Turns out this is a _terrible_ idea. Does not scale well. So slow it's not even worth trying to benchmark. Takes orders of magitude longer to find solution, at n = 10, when this filtering is included. Need to figure out mathematically how to only generate single set of unique paths, which means reliquishing the handy `permutations...unique()` helper.]
+
+TODO: Do not create (or worse, delete) permutations where first number (representing an index) is larger than last number (also representing an index.) This looks like it may well work, especially if I can find a way to prevent the creation of any such permutation.
+See: https://stackoverflow.com/questions/960557/how-to-generate-permutations-of-a-list-without-reverse-duplicates-in-python-us
 
 TODO: Cache distances calculated between 2 points, as same 2 points will be considered more than once in any reasonably large collection of points (and many times for large collections)
-
-TODO: Benchmark pristine non-optimized brute-force solution, for comparison with attempted optimized versions.
 
 This gives us (n - 1)! / 2 permutations for n points.
 
