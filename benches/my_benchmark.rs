@@ -1,6 +1,7 @@
-use criterion::{criterion_group, criterion_main, Criterion};
+use criterion::{black_box, criterion_group, criterion_main, Criterion};
 use itertools::Itertools;
 use rand::prelude::*;
+use std::time::Duration;
 
 fn brute_unoptimized(coords: Vec<(f32, f32)>) -> (Vec<(f32, f32)>, f32, u32) {
     let n = coords.len(); // Number of points we want
@@ -84,10 +85,16 @@ fn criterion_benchmark(c: &mut Criterion) {
     let n = 10; // Number of points we want
     let coords: Vec<(f32, f32)> = create_points(n);
 
-
-    c.bench_function("brute-force 10", |b| b.iter(|| brute_unoptimized(coords.clone())));
+    c.bench_function("brute-force 10", |b| b.iter(|| brute_unoptimized(black_box(coords.clone()))));
 }
 
-criterion_group!(benches, criterion_benchmark);
-criterion_main!(benches);
+fn set_target_time() -> Criterion {
+    Criterion::default().measurement_time(Duration::new(15, 0)).sample_size(50)
+}
 
+criterion_group! {
+    name = benches;
+    config = set_target_time();
+    targets = criterion_benchmark
+}
+criterion_main!(benches);
