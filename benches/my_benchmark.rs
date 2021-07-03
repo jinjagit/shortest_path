@@ -4,7 +4,7 @@ use rand::prelude::*;
 use std::time::Duration;
 
 fn brute_unoptimized(coords: Vec<(f32, f32)>) -> (Vec<(f32, f32)>, f32, u32) {
-    let n = coords.len(); // Number of points we want
+    let n = coords.len(); // Number of points provided
 
     // Find all permutations of a vec
     let mut indices: Vec<usize> = vec![];
@@ -52,7 +52,7 @@ fn brute_unoptimized(coords: Vec<(f32, f32)>) -> (Vec<(f32, f32)>, f32, u32) {
 
 
 
-// Utils:
+/// Utils:
 
 // Create a random collection of n points, where 0 <= x <= 1, 0 <= y <= 1
 pub fn create_points(n: usize) -> Vec<(f32, f32)> {
@@ -79,7 +79,7 @@ pub fn distance(point_a: (f32, f32), point_b: (f32, f32)) -> f32 {
 }
 
 
-// Run the Criterion benchmark
+/// Run the Criterion benchmark
 
 fn criterion_benchmark(c: &mut Criterion) {
     let n = 10; // Number of points we want

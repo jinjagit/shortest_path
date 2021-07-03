@@ -13,7 +13,7 @@ fn main() {
     println!("permutations (n - 1)! = {:?}", count);
     println!("shortest = {:?}", shortest);
 
-    // Create chart of best and worst paths (green lines vs red lines)
+    // Create chart of shortest path
     plot::plot(best_path_coords).unwrap();
 }
 

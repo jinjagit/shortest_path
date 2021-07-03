@@ -43,12 +43,5 @@ pub fn brute_unoptimized(coords: Vec<(f32, f32)>) -> (Vec<(f32, f32)>, f32, u32)
         count += 1;
     }
 
-    // Make vecs of coords from best_path & worst_path vecs (of &usize elements)
-    let mut best_path_coords: Vec<(f32, f32)> = vec![];
-
-    for e in best_path {
-        best_path_coords.push(coords[*e]);
-    }
-
-    return (best_path_coords, shortest, count);
+    return (utils::reorder_coords(coords, best_path), shortest, count);
 }
