@@ -1,18 +1,22 @@
 mod plot;
 
 use itertools::Itertools;
+use rand::prelude::*;
 
 fn main() {
     // Define coords to use for line series & points
-    let coords: Vec<(f32, f32)> = vec![(0.3, 0.6), (0.7, 0.4), (0.8, 0.7), (0.1, 0.3), (0.7, 0.9)];
+    let mut coords: Vec<(f32, f32)> = vec![];
 
-    // let d: f32 = distance(coords[0], coords[1]);
-    // println!("d = {:.3}", d);
+    let mut rng = rand::thread_rng();
+    let n = 10; // Number of points we want to use
 
-    let n = coords.len();
+    for _ in 0..n + 1 {
+        let x: f32 = rng.gen();
+        let y: f32 = rng.gen();
+        coords.push((x, y));
+    }
 
-    // Pass coords to plot function
-    // plot::plot(coords).unwrap();
+    println!("{:?}\n", coords);
 
     // Let's find all permutations of a vec
     let mut indices: Vec<usize> = vec![];
