@@ -13,5 +13,5 @@ rand = "0.8.4"
 criterion = "0.3"
 
 [[bench]]
-name = "brute_no_dupes"
+name = "brute_matrix"
 harness = false

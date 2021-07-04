@@ -40,25 +40,37 @@ d----------c
 
 ### Filtering duplicates?
 
-Using the super fast Rust `Itertools` `permutations(n).unique()` command gives us 2 sets of actually unique routes, since it returns reverse copies of each route.
+Using the super-fast Rust `Itertools` `permutations(n).unique()` command gives us 2 subsets of effectively equivalent unique routes, since it returns reverse copies of each route.
 
 One would imagine, therefore, that removing, or filtering out these duplicates would improve performance. Benchmarking, however, shows that this is not the case. Using either the elegant `vec.retain(|v| v[0] < v[n - 1])` (which compares the first and last elements of each 'route' vec), or a simple conditional to 'ignore' such cases when calculating the routes total distance, adds about 10% to the run-time (confimed for n = 5, 10 & 12 points).
 
-Even though this seems counter-intuitive, and theoretically there may be a scale where the perfomance hit is less than that due to increasing route distance calculations, we have no evidence this method is useful. Thus we should just calculate all route distances for the (n-1)! cases, and not for the (n-1)! / 2 subset.
+Even though this seems counter-intuitive, and theoretically there may be a scale where the perfomance hit is less than that due to increasing route distance calculations, we have no evidence this method is useful. Thus, we should just calculate all route distances for the (n-1)! cases, and not for the (n-1)! / 2 subset.
 
-### Distances matrix?
+____________________________________________________________________________
 
-Since we know that we will calculate the distance between any 2 points multiple times, we could first calculate the distance between each unique pair of points and add the results to a matrix. We could then use this matrix as a look-up-table to calculate the total distance of each route permutation.
+### Distances matrix
 
-We should make this 'extra efficient' by only calculating, say, the distance between point 2 -> point 4, and using this as the matrix value for point 4 -> point 2 also. This reduces the calculations needed by half.
+Since we know that we will calculate the distance between any 2 points multiple times, we could first calculate the distance between each unique pair of points and put the results in a matrix. We could then use this matrix as a look-up-table to calculate the total distance of each route permutation.
 
--------------------------------------------------------------------------------------------------------------------------------------
+We make this 'extra efficient' by only calculating, say, the distance between point 2 -> point 4, and using this as the matrix value for point 4 -> point 2 also. This reduces the calculations needed by half.
 
-TODO: Cache distances calculated between 2 points, as same 2 points will be considered more than once in any reasonably large collection of points (and many times for large collections)
+This approach significantly improves run-times. 4% faster for 10 points and 12% faster for 12 points. It seems likely this improvement becomes more significant as we increase the number of points.
 
-This gives us (n - 1)! / 2 permutations for n points.
+____________________________________________________________________________
 
-Steps 2 & 3 involve iterating over each generated list, calculating and summing the distances between each pair of points taken in sequence, and returning the set that gave the shortest total distance (and that distance)
+### Single thread
+
+We could use multiple threads, but since previous experimentation shows this gives about a 4 - 5 times perfomance increase, and this will probably only make solving for paths with one added point reasonable, on my machine, it seems unimportant to implement. What matters more is having a fair comparison between brute force and any approximation method tried.
+
+____________________________________________________________________________
+
+### TLDR
+
+Using a matrix of distances between points and _not_ filtering out the single subset of duplicate route permutations gives us a reasonable brute-force method for finding the shortest path between any given set of coordinates.
+
+In practice, any more than 12 points is unsuitable for benchmarking on my machine (each solution takes about 50 seconds). 10 points is way faster (approx. 0.25 secs / solution).
+
+____________________________________________________________________________
 
 ## Benchmarks:
 
