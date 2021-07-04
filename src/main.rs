@@ -10,7 +10,13 @@ fn main() {
     // let n = 10; // Number of points we want
     // let coords: Vec<(f32, f32)> = create_points(n);
 
-    let coords: Vec<(f32, f32)> = vec![(0.75, 0.32), (0.154, 0.83), (0.44, 0.77), (0.3456, 0.7654), (0.111, 0.222)];
+    let coords: Vec<(f32, f32)> = vec![
+        (0.75, 0.32),
+        (0.154, 0.83),
+        (0.44, 0.77),
+        (0.3456, 0.7654),
+        (0.111, 0.222),
+    ];
 
     // let (best_path_coords, shortest, count): (Vec<(f32, f32)>, f32, u32) =
     //     brute_force::brute_force(coords);
