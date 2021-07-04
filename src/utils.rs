@@ -30,6 +30,7 @@ pub fn create_indices_vec(n: usize) -> Vec<usize> {
     indices
 }
 
+// Create matrix of distances between points provided in coords vec.
 pub fn distance_matrix(coords: Vec<(f32, f32)>, n: usize) -> Vec<Vec<f32>> {
     let mut matrix: Vec<Vec<f32>> = vec![vec![0.0; n]; n];
 

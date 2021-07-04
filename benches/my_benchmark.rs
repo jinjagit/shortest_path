@@ -36,7 +36,6 @@ fn brute_unoptimized(coords: Vec<(f32, f32)>) -> (Vec<(f32, f32)>, f32, u32) {
     return (reorder_coords(coords, best_path), shortest, count);
 }
 
-
 /// Utils:
 
 // Create a random collection of n points, where 0 <= x <= 1, 0 <= y <= 1
