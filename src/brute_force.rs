@@ -97,15 +97,7 @@ pub fn brute_matrix(coords: Vec<(f32, f32)>) -> (Vec<(f32, f32)>, f32, u32) {
     let mut shortest: f32 = 999999.9;
 
     // Create matrix of distances between points. We can use fixed-length arrays.
-    let mut matrix: Vec<Vec<f32>> = vec![vec![0.0; n]; n];
-
-    for i in 0..n {
-        for j in i + 1..n {
-            let d: f32 = utils::distance(coords[i], coords[j]);
-            matrix[i][j] = d;
-            matrix[j][i] = d;
-        }
-    }
+    let matrix: Vec<Vec<f32>> = utils::distance_matrix(coords.clone(), n);
 
     // iterate over permutations of indices 1..n
     for perm in indices.iter().permutations(indices.len()).unique() {
@@ -121,7 +113,7 @@ pub fn brute_matrix(coords: Vec<(f32, f32)>) -> (Vec<(f32, f32)>, f32, u32) {
 
         total_d += matrix[*path[path.len() - 1]][0];
 
-        println!("{:?} = {:?}", path, total_d);
+        // println!("{:?} = {:?}", path, total_d);
 
         if total_d < shortest {
             shortest = total_d;

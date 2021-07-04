@@ -66,9 +66,9 @@ ____________________________________________________________________________
 
 ### TLDR
 
-Using a matrix of distances between points and _not_ filtering out the single subset of duplicate route permutations gives us a reasonable brute-force method for finding the shortest path between any given set of coordinates.
+Using a matrix of distances between points and _not_ filtering out the single subset of duplicate route permutations gives us a reasonable brute-force method for finding the shortest path through any given set of coordinates.
 
-In practice, any more than 12 points is unsuitable for benchmarking on my machine (each solution takes about 50 seconds). 10 points is way faster (approx. 0.25 secs / solution).
+In practice, solving for any more than 12 points is unsuitable for benchmarking on my machine (each solution takes about 50 seconds). 10 points is way faster (approx. 0.25 secs / solution).
 
 ____________________________________________________________________________
 

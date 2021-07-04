@@ -29,3 +29,17 @@ pub fn create_indices_vec(n: usize) -> Vec<usize> {
 
     indices
 }
+
+pub fn distance_matrix(coords: Vec<(f32, f32)>, n: usize) -> Vec<Vec<f32>> {
+    let mut matrix: Vec<Vec<f32>> = vec![vec![0.0; n]; n];
+
+    for i in 0..n {
+        for j in i + 1..n {
+            let d: f32 = distance(coords[i], coords[j]);
+            matrix[i][j] = d;
+            matrix[j][i] = d;
+        }
+    }
+
+    matrix
+}
