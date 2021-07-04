@@ -37,14 +37,22 @@ a----------b
 |          |
 d----------c
 ```
-I _think_ we just want half of the set of permutations. [Confirmed there are pairs of equivalent paths, but using `.permutations(indices.len()).unique()` does not always neatly divide these into two 'halves' of the list of permutations]
 
-DONE: Benchmark pristine non-optimized brute-force solution, for comparison with attempted optimized versions.
+### Filtering duplicates?
 
-DONE: Filter out the equivalent paths to leave only unique paths. [EDIT: Turns out this is a _terrible_ idea. Does not scale well. So slow it's not even worth trying to benchmark. Takes orders of magitude longer to find solution, at n = 10, when this filtering is included. Need to figure out mathematically how to only generate single set of unique paths, which means reliquishing the handy `permutations...unique()` helper.]
+The super fast Rust `Itertools` `permutations(n).unique()` command gives us 2 sets of actually unique routes, since it returns reverse copies of each route.
 
-TODO: Do not create (or worse, delete) permutations where first number (representing an index) is larger than last number (also representing an index.) This looks like it may well work, especially if I can find a way to prevent the creation of any such permutation.
-See: https://stackoverflow.com/questions/960557/how-to-generate-permutations-of-a-list-without-reverse-duplicates-in-python-us
+One would imagine, therefore, that removing, or filtering out these duplicates would improve performance. Benchmarking, however, shows that this is not the case. Using either the elegant `vec.retain(|v| v[0] < v[n - 1])` (which compares the first and last elements of each 'route' vec), or a simple conditional to 'ignore' such cases when calculating the routes total distance, add about 10% to the run-time (confimed for n = 5, 10 & 12 points).
+
+Even though this seems counter-intuitive, and theoretically there may be a scale where the perfomance hit is less than that due to increasing route distance calculations, we have no evidence this method is useful. Thus we should just calculate all route distances for the (n-1)! cases, and not for the (n-1)! / 2 subset.
+
+### Distances matrix?
+
+Since we know that we will calculate the distance between any 2 points multiple times, we could first calculate the distance between each unique pair of points and add the results to a matrix. We could then use this matrix as a look-up-table to calculate the total distance of each route permutation.
+
+We should make this 'extra efficient' by only calculating, say, the distance between point 2 -> point 4, and using this as the matrix value for point 4 -> point 2 also. This reduces the calculattions needed by half.
+
+-------------------------------------------------------------------------------------------------------------------------------------
 
 TODO: Cache distances calculated between 2 points, as same 2 points will be considered more than once in any reasonably large collection of points (and many times for large collections)
 

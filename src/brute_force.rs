@@ -49,7 +49,7 @@ pub fn brute_no_duplicates(coords: Vec<(f32, f32)>) -> (Vec<(f32, f32)>, f32, u3
     let mut shortest: f32 = 999999.9;
 
     // Create all permutations of indices 1..n
-    let mut perms: Vec<Vec<&usize>> = indices
+    let perms: Vec<Vec<&usize>> = indices
         .iter()
         .permutations(indices.len())
         .unique()
@@ -58,29 +58,31 @@ pub fn brute_no_duplicates(coords: Vec<(f32, f32)>) -> (Vec<(f32, f32)>, f32, u3
     // Remove duplicate routes (inverse ordering of a route == effective duplicate of route)
     // One way to do this is to only accept permutations where first value < last value,
     // in the case of ordered sequential integers
-    perms.retain(|x| x[0] < x[n - 2]);
+    // perms.retain(|x| x[0] < x[n - 2]);
 
     for perm in perms {
-        let mut p = perm.clone();
-        let mut path: Vec<&usize> = vec![&0];
-        path.append(&mut p);
+        if perm[0] < perm[n - 2] {
+            let mut p = perm.clone();
+            let mut path: Vec<&usize> = vec![&0];
+            path.append(&mut p);
 
-        let mut total_d: f32 = 0.0;
+            let mut total_d: f32 = 0.0;
 
-        for i in 0..path.len() - 1 {
-            total_d += utils::distance(coords[*path[i]], coords[*path[i + 1]]);
+            for i in 0..path.len() - 1 {
+                total_d += utils::distance(coords[*path[i]], coords[*path[i + 1]]);
+            }
+
+            total_d += utils::distance(coords[*path[path.len() - 1]], coords[0]);
+
+            if total_d < shortest {
+                shortest = total_d;
+                best_path = path.clone();
+            }
+
+            count += 1;
+
+            println!("{:?} = {:?}", path, total_d);
         }
-
-        total_d += utils::distance(coords[*path[path.len() - 1]], coords[0]);
-
-        if total_d < shortest {
-            shortest = total_d;
-            best_path = path.clone();
-        }
-
-        count += 1;
-
-        println!("{:?} = {:?}", path, total_d);
     }
 
     return (utils::reorder_coords(coords, best_path), shortest, count);

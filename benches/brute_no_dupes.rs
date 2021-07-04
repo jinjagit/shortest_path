@@ -24,24 +24,26 @@ fn brute_no_duplicates(coords: Vec<(f32, f32)>) -> (Vec<(f32, f32)>, f32, u32) {
     perms.retain(|p| p[0] < p[n - 2]);
 
     for perm in perms {
-        let mut p = perm.clone();
-        let mut path: Vec<&usize> = vec![&0];
-        path.append(&mut p);
+        // if perm[0] < perm[n - 2] {
+            let mut p = perm.clone();
+            let mut path: Vec<&usize> = vec![&0];
+            path.append(&mut p);
 
-        let mut total_d: f32 = 0.0;
+            let mut total_d: f32 = 0.0;
 
-        for i in 0..path.len() - 1 {
-            total_d += distance(coords[*path[i]], coords[*path[i + 1]]);
-        }
+            for i in 0..path.len() - 1 {
+                total_d += distance(coords[*path[i]], coords[*path[i + 1]]);
+            }
 
-        total_d += distance(coords[*path[path.len() - 1]], coords[0]);
+            total_d += distance(coords[*path[path.len() - 1]], coords[0]);
 
-        if total_d < shortest {
-            shortest = total_d;
-            best_path = path.clone();
-        }
+            if total_d < shortest {
+                shortest = total_d;
+                best_path = path.clone();
+            }
 
-        count += 1;
+            count += 1;
+        // }
     }
 
     return (reorder_coords(coords, best_path), shortest, count);
@@ -98,10 +100,10 @@ pub fn create_indices_vec(n: usize) -> Vec<usize> {
 /// Run the Criterion benchmark
 
 fn criterion_benchmark(c: &mut Criterion) {
-    let n = 10; // Number of points we want
+    let n = 12; // Number of points we want
     let coords: Vec<(f32, f32)> = create_points(n);
 
-    c.bench_function("brute-no-dupes 10", |b| {
+    c.bench_function("brute-remove-dupes 12", |b| {
         b.iter(|| brute_no_duplicates(black_box(coords.clone())))
     });
 }
@@ -109,7 +111,7 @@ fn criterion_benchmark(c: &mut Criterion) {
 fn set_target_time() -> Criterion {
     Criterion::default()
         .measurement_time(Duration::new(15, 0))
-        .sample_size(50)
+        .sample_size(10)
 }
 
 criterion_group! {

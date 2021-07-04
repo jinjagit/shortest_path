@@ -88,10 +88,10 @@ pub fn create_indices_vec(n: usize) -> Vec<usize> {
 /// Run the Criterion benchmark
 
 fn criterion_benchmark(c: &mut Criterion) {
-    let n = 10; // Number of points we want
+    let n = 12; // Number of points we want
     let coords: Vec<(f32, f32)> = create_points(n);
 
-    c.bench_function("brute-force 10", |b| {
+    c.bench_function("brute-force 12", |b| {
         b.iter(|| brute_unoptimized(black_box(coords.clone())))
     });
 }
@@ -99,7 +99,7 @@ fn criterion_benchmark(c: &mut Criterion) {
 fn set_target_time() -> Criterion {
     Criterion::default()
         .measurement_time(Duration::new(15, 0))
-        .sample_size(50)
+        .sample_size(10)
 }
 
 criterion_group! {
