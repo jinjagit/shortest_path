@@ -78,3 +78,9 @@ Using [Criterion crate](https://bheisler.github.io/criterion.rs/book/getting_sta
 Also installed [cargo-criterion plugin](https://github.com/bheisler/cargo-criterion).
 
 To run: `$ cargo criterion`
+
+____________________________________________________________________________
+
+## Resources?
+- https://github.com/LazoCoder/Ant-Colony-Optimization-for-the-Traveling-Salesman-Problem/blob/master/Ants/Ant.java
+- https://www.baeldung.com/java-ant-colony-optimization

@@ -1,23 +1,27 @@
+mod ants;
 mod brute_force;
 mod plot;
 
+use ants::ant_force;
 use rand::prelude::*;
 
 fn main() {
-    // Define coords to use for line series & points
-    let n = 10; // Number of points we want
-    let coords: Vec<(f32, f32)> = create_points(n);
+    // // Define coords to use for line series & points
+    // let n = 10; // Number of points we want
+    // let coords: Vec<(f32, f32)> = create_points(n);
 
-    // let coords: Vec<(f32, f32)> = vec![(0.75, 0.32), (0.154, 0.83), (0.44, 0.77), (0.3456, 0.7654), (0.111, 0.222)];
+    let coords: Vec<(f32, f32)> = vec![(0.75, 0.32), (0.154, 0.83), (0.44, 0.77), (0.3456, 0.7654), (0.111, 0.222)];
 
-    let (best_path_coords, shortest, count): (Vec<(f32, f32)>, f32, u32) =
-        brute_force::brute_force(coords);
+    // let (best_path_coords, shortest, count): (Vec<(f32, f32)>, f32, u32) =
+    //     brute_force::brute_force(coords);
 
-    println!("permutations (n - 1)! = {:?}", count);
-    println!("shortest = {:?}", shortest);
+    // println!("permutations (n - 1)! = {:?}", count);
+    // println!("shortest = {:?}", shortest);
 
-    // Create chart of shortest path
-    plot::plot(best_path_coords).unwrap();
+    // // Create chart of shortest path
+    // plot::plot(best_path_coords).unwrap();
+
+    ant_force(coords);
 }
 
 pub fn create_points(n: usize) -> Vec<(f32, f32)> {
