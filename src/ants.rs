@@ -1,6 +1,8 @@
 #[path = "utils.rs"]
 mod utils;
 
+use rand::prelude::*;
+
 #[derive(Debug)] // This annotation allows debugging print of struct
 struct Ant {
     route: Vec<usize>,
@@ -29,37 +31,49 @@ impl Ant {
 }
 
 pub fn ant_force(coords: Vec<(f32, f32)>) {
-    let n = coords.len(); // Number of points (cities)
+    let n: usize =  coords.len(); // Number of points (cities)
     let mut ants: Vec<Ant> = vec![];
 
-    let c: f32 = 1.0; // The original number of trails, at the start of the simulation
+    let c: f32 = 1.0; // The original value of all trails, at the start of the simulation
     let alpha: f32 = 1.0; // Controls the pheromone importance
     let beta: f32 = 5.0; // Controls the distance priority. Should, generally, be > alpha.
     let evaporation: f32 = 0.5; // The percent of pheromone evaporating every iteration
     let Q: f32 = 500.0; // Info. about the total amount of pheromone left on the trail by each Ant
-    let n_ants: f32 = 0.8; // How many ants we'll use per city
+    let ant_factor: f32 = 0.8; // How many ants we'll use per city
     let random_factor: f32 = 0.01;
 
-    // Create matrix of distances between points.
+    // Create matrix of distances between cities.
     let distance_matrix: Vec<Vec<f32>> = utils::distance_matrix(coords.clone(), n);
-    // Create matrix of visibility of other points from all points, using distance_matrix.
+    // Create matrix of visibility of other cities from all cities, using distance_matrix.
     let visibility_matrix: Vec<Vec<f32>> = utils::visibility_matrix(distance_matrix.clone());
+    // Create matrix of pheromone trails between cities, all set to initial value of c.
+    let mut trails_matrix: Vec<Vec<f32>> = vec![vec![c; n]; n];
 
-    let n_ants: usize = 3; // Set number of ants
+    let probabilities: Vec<f32> = vec![0.0; n];
 
-    // Add ants, each in default state, to 'ants' vec
-    for _ in 0..n_ants {
+    // Set number of ants. Always rounds down.
+    let n_ants: usize = (n as f32 * ant_factor) as usize;
+
+    let mut rng = rand::thread_rng();
+
+    // Add ants, each in default state, to 'ants' vec.
+    // Set each ant to start at a random city.
+    for i in 0..n_ants {
         ants.push(Ant {
             route: vec![],
             visited: vec![false; n],
         });
+
+        ants[i].visit(rng.gen_range(0..n));
     }
 
+
+
     // DEBUG
-    ants[0].visit(2);
-    ants[0].visit(4);
-    ants[0].visit(1);
-    ants[1].visit(0);
+    // ants[0].visit(2);
+    // ants[0].visit(4);
+    // ants[0].visit(1);
+    // ants[1].visit(0);
 
     println!("Ant 0 has visited 3? {:?}", ants[0].has_visited(3));
     println!("Ant 0 has visited 4? {:?}", ants[0].has_visited(4));
