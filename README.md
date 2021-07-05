@@ -2,7 +2,7 @@
 
 Investigating the 'travelling sales-person' problem.
 
-Start from [plot repo](https://github.com/jinjagit/plot) and build to solve first by brute force.
+Starting point: [plot repo](https://github.com/jinjagit/plot) to use as a vizualization tool for paths found by brute force & approximation algos.
 
 ## Brute-force solution
 
@@ -72,15 +72,19 @@ In practice, solving for any more than 12 points is unsuitable for benchmarking 
 
 ____________________________________________________________________________
 
+## Ant Colony Approximation
+
+In progress...
+
+Resources:
+- https://github.com/LazoCoder/Ant-Colony-Optimization-for-the-Traveling-Salesman-Problem/blob/master/Ants/Ant.java
+- https://www.baeldung.com/java-ant-colony-optimization
+
+____________________________________________________________________________
+
 ## Benchmarks:
 
 Using [Criterion crate](https://bheisler.github.io/criterion.rs/book/getting_started.html).
 Also installed [cargo-criterion plugin](https://github.com/bheisler/cargo-criterion).
 
 To run: `$ cargo criterion`
-
-____________________________________________________________________________
-
-## Resources?
-- https://github.com/LazoCoder/Ant-Colony-Optimization-for-the-Traveling-Salesman-Problem/blob/master/Ants/Ant.java
-- https://www.baeldung.com/java-ant-colony-optimization

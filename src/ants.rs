@@ -47,7 +47,7 @@ pub fn ant_force(coords: Vec<(f32, f32)>) {
     let evaporation: f32 = 0.5; // The percent of pheromone evaporating every iteration
     let Q: f32 = 500.0; // Info. about the total amount of pheromone left on the trail by each Ant
     let ant_factor: f32 = 0.8; // How many ants we'll use per city
-    let random_factor: f32 = 1.1; // DEBUG: Currently set over 1 to test rnadom city selection
+    let random_factor: f32 = 1.1; // DEBUG: Currently set over 1 to test random city selection
 
     // Create matrix of distances between cities.
     let distance_matrix: Vec<Vec<f32>> = utils::distance_matrix(coords.clone(), n);
