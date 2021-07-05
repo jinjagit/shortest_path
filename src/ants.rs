@@ -29,7 +29,7 @@ impl Ant {
 }
 
 pub fn ant_force(coords: Vec<(f32, f32)>) {
-    let n = coords.len();
+    let n = coords.len(); // Number of points (cities)
     let mut ants: Vec<Ant> = vec![];
 
     let c: f32 = 1.0; // The original number of trails, at the start of the simulation
@@ -42,6 +42,8 @@ pub fn ant_force(coords: Vec<(f32, f32)>) {
 
     // Create matrix of distances between points.
     let distance_matrix: Vec<Vec<f32>> = utils::distance_matrix(coords.clone(), n);
+    // Create matrix of visibility of other points from all points, using distance_matrix.
+    let visibility_matrix: Vec<Vec<f32>> = utils::visibility_matrix(distance_matrix.clone());
 
     let n_ants: usize = 3; // Set number of ants
 
