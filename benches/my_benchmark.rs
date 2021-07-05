@@ -5,7 +5,7 @@ use std::time::Duration;
 
 fn brute_unoptimized(coords: Vec<(f32, f32)>) -> (Vec<(f32, f32)>, f32, u32) {
     let n = coords.len(); // Number of points provided
-    let indices: Vec<usize> = create_indices_vec(n);
+    let indices: Vec<usize> = create_indices_vec_excl_start(n);
 
     let mut count: u32 = 0;
     let mut best_path: Vec<&usize> = vec![];
@@ -74,7 +74,7 @@ pub fn reorder_coords(coords: Vec<(f32, f32)>, best_path: Vec<&usize>) -> Vec<(f
 }
 
 // Return vec indices, starting at 1, and ending at n - 1.
-pub fn create_indices_vec(n: usize) -> Vec<usize> {
+pub fn create_indices_vec_excl_start(n: usize) -> Vec<usize> {
     let mut indices: Vec<usize> = vec![];
 
     for i in 1..n {

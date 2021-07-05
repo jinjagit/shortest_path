@@ -5,7 +5,7 @@ use std::time::Duration;
 
 pub fn brute_matrix(coords: Vec<(f32, f32)>) -> (Vec<(f32, f32)>, f32, u32) {
     let n = coords.len(); // Number of points provided
-    let indices: Vec<usize> = create_indices_vec(n);
+    let indices: Vec<usize> = create_indices_vec_excl_start(n);
 
     let mut count: u32 = 0;
     let mut best_path: Vec<&usize> = vec![];
@@ -85,7 +85,7 @@ pub fn reorder_coords(coords: Vec<(f32, f32)>, best_path: Vec<&usize>) -> Vec<(f
 }
 
 // Return vec indices, starting at 1, and ending at n - 1.
-pub fn create_indices_vec(n: usize) -> Vec<usize> {
+pub fn create_indices_vec_excl_start(n: usize) -> Vec<usize> {
     let mut indices: Vec<usize> = vec![];
 
     for i in 1..n {
@@ -98,10 +98,10 @@ pub fn create_indices_vec(n: usize) -> Vec<usize> {
 /// Run the Criterion benchmark
 
 fn criterion_benchmark(c: &mut Criterion) {
-    let n = 12; // Number of points we want
+    let n = 10; // Number of points we want
     let coords: Vec<(f32, f32)> = create_points(n);
 
-    c.bench_function("brute-matrix 12", |b| {
+    c.bench_function("brute-matrix 10", |b| {
         b.iter(|| brute_matrix(black_box(coords.clone())))
     });
 }
@@ -109,7 +109,7 @@ fn criterion_benchmark(c: &mut Criterion) {
 fn set_target_time() -> Criterion {
     Criterion::default()
         .measurement_time(Duration::new(15, 0))
-        .sample_size(10)
+        .sample_size(50)
 }
 
 criterion_group! {

@@ -5,7 +5,7 @@ use itertools::Itertools;
 
 pub fn brute_force(coords: Vec<(f32, f32)>) -> (Vec<(f32, f32)>, f32, u32) {
     let n = coords.len(); // Number of points provided
-    let indices: Vec<usize> = utils::create_indices_vec(n);
+    let indices: Vec<usize> = utils::create_indices_vec_excl_start(n);
     let mut count: u32 = 0;
     let mut best_path: Vec<&usize> = vec![];
     let mut shortest: f32 = 999999.9;
