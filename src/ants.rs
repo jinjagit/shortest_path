@@ -45,7 +45,7 @@ pub fn ant_force(coords: Vec<(f32, f32)>) {
     // Create matrix of distances between cities.
     let distance_matrix: Vec<Vec<f32>> = utils::distance_matrix(coords.clone(), n);
     // Create matrix of visibility of other cities from all cities, using distance_matrix.
-    let visibility_matrix: Vec<Vec<f32>> = utils::visibility_matrix(distance_matrix.clone());
+    let visibility_matrix: Vec<Vec<f32>> = visibility_matrix(distance_matrix.clone());
     // Create matrix of pheromone trails between cities, all set to initial value of c.
     let mut trails_matrix: Vec<Vec<f32>> = vec![vec![c; n]; n];
 
@@ -81,4 +81,28 @@ pub fn ant_force(coords: Vec<(f32, f32)>) {
     for ant in ants {
         println!("{:?}", ant);
     }
+}
+
+
+
+
+
+
+// Create matrix of visibility of other points from all points, using distances in distance_matrix.
+// Will produce values of 'inf' for distance between point & self, as expected.
+// 'inf' values can be found using if value.is_finite() == false
+fn visibility_matrix(distance_matrix: Vec<Vec<f32>>) -> Vec<Vec<f32>> {
+    let mut visibility_matrix: Vec<Vec<f32>> = vec![];
+
+    for i in 0..distance_matrix.len() {
+        visibility_matrix.push(
+            distance_matrix[i]
+                .clone()
+                .into_iter()
+                .map(|x| 1.0 / x)
+                .collect(),
+        );
+    }
+
+    visibility_matrix
 }

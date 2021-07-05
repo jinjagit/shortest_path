@@ -44,22 +44,3 @@ pub fn distance_matrix(coords: Vec<(f32, f32)>, n: usize) -> Vec<Vec<f32>> {
 
     matrix
 }
-
-// Create matrix of visibility of other points from all points, using distances in distance_matrix.
-// Will produce values of 'inf' for distance between point & self, as expected.
-// 'inf' values can be found using if value.is_finite() == false
-pub fn visibility_matrix(distance_matrix: Vec<Vec<f32>>) -> Vec<Vec<f32>> {
-    let mut visibility_matrix: Vec<Vec<f32>> = vec![];
-
-    for i in 0..distance_matrix.len() {
-        visibility_matrix.push(
-            distance_matrix[i]
-                .clone()
-                .into_iter()
-                .map(|x| 1.0 / x)
-                .collect(),
-        );
-    }
-
-    visibility_matrix
-}
