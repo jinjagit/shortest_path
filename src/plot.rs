@@ -19,7 +19,8 @@ pub fn plot(
     let mut line_coords = best_path.clone();
     line_coords.push(best_path[0]);
 
-    chart.draw_series(LineSeries::new(line_coords, &BLUE))?;
+    // mix == weight, 10.0 max, 0.3 min viable weight
+    chart.draw_series(LineSeries::new(line_coords, &BLUE.mix(10.0)))?;
 
     // // Move coords of worst_path 1.0 to the right
     // for i in 0..worst_path.len() {
