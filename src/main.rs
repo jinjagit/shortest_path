@@ -30,7 +30,7 @@ fn main() {
     println!("shortest = {:?}", shortest);
 
     // Create chart of shortest path
-    plot::plot(best_path_coords).unwrap();
+    plot::plot(best_path_coords, "Brute-force solution", "brute-force-10.png").unwrap();
 
     // ant_force(coords);
 }
