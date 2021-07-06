@@ -1,4 +1,5 @@
 // Find distance between 2 points, using Pythagoras Theorum: c = sqrt(a^2 + b^2)
+#[allow(dead_code)]
 pub fn distance(point_a: (f32, f32), point_b: (f32, f32)) -> f32 {
     let (x1, y1) = point_a;
     let (x2, y2) = point_b;
@@ -9,6 +10,7 @@ pub fn distance(point_a: (f32, f32), point_b: (f32, f32)) -> f32 {
 }
 
 // Return vec of coords reordered using vec of indexes representing shortest_path through coords
+#[allow(dead_code)]
 pub fn reorder_coords(coords: Vec<(f32, f32)>, best_path: Vec<&usize>) -> Vec<(f32, f32)> {
     let mut best_path_coords: Vec<(f32, f32)> = vec![];
 
@@ -20,6 +22,7 @@ pub fn reorder_coords(coords: Vec<(f32, f32)>, best_path: Vec<&usize>) -> Vec<(f
 }
 
 // Return vec indices, starting at 1, and ending at n - 1.
+#[allow(dead_code)]
 pub fn create_indices_vec_excl_start(n: usize) -> Vec<usize> {
     let mut indices: Vec<usize> = vec![];
 
@@ -31,6 +34,7 @@ pub fn create_indices_vec_excl_start(n: usize) -> Vec<usize> {
 }
 
 // Create matrix of distances between points provided in coords vec.
+#[allow(dead_code)]
 pub fn distance_matrix(coords: Vec<(f32, f32)>, n: usize) -> Vec<Vec<f32>> {
     let mut matrix: Vec<Vec<f32>> = vec![vec![0.0; n]; n];
 

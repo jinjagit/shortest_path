@@ -1,5 +1,6 @@
 use plotters::prelude::*;
 
+#[allow(dead_code)]
 pub fn plot(
     best_path: std::vec::Vec<(f32, f32)>, // mut worst_path: std::vec::Vec<(f32, f32)>,
 ) -> Result<(), Box<dyn std::error::Error>> {

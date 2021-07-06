@@ -38,7 +38,7 @@ impl Ant {
 pub fn ant_force(coords: Vec<(f32, f32)>) {
     let n: usize = coords.len(); // Number of points (cities)
     let mut ants: Vec<Ant> = vec![];
-    let iterations: usize = 5; // Number of simulation iterations to run
+    let iterations: usize = 10; // Number of simulation iterations to run
 
     let c: f32 = 1.0; // The original value of all pheromone trails, at the start of the simulation
     let alpha: f32 = 1.0; // Controls the pheromone importance
@@ -54,8 +54,6 @@ pub fn ant_force(coords: Vec<(f32, f32)>) {
     let visibility_matrix: Vec<Vec<f32>> = visibility_matrix(distance_matrix.clone());
     // Create matrix of pheromone trails between cities, all set to initial value of c.
     let mut trails_matrix: Vec<Vec<f32>> = vec![vec![c; n]; n];
-
-    // let mut probabilities: Vec<f32> = vec![0.0; n]; // TODO: Not sure this is needed here, as in fn
 
     // Set number of ants. Always rounds down.
     let n_ants: usize = (n as f32 * ant_factor) as usize;
@@ -75,82 +73,93 @@ pub fn ant_force(coords: Vec<(f32, f32)>) {
         ants[i].visit(rng.gen_range(0..n));
     }
 
-    let mut best_route: Vec<usize> = vec![];
-    let mut best_route_length: f32 = 0.0;
 
-    // ========== iteration start ==================================================================
 
-    for i in 0..iterations {
-        // Move ants: Each ant 'finds' a path, starting at random city, that visits each city once only.
-        ants = move_ants(
-            ants.clone(),
-            n,
-            n_ants,
-            random_factor,
-            trails_matrix.clone(),
-            visibility_matrix.clone(),
-            alpha,
-            beta,
-        );
 
-        // Update pheromone trails;
-        trails_matrix = update_trails(
-            ants.clone(),
-            n_ants,
-            n,
-            evaporation,
-            q,
-            distance_matrix.clone(),
-            trails_matrix.clone(),
-        );
+    let mut n_wrong: i16 = 0;
 
-        // Update best route found so far (and its length)
-        let (updated_best_route, updated_best_route_length) = update_best(
-            ants.clone(),
-            best_route.clone(),
-            best_route_length,
-            distance_matrix.clone(),
-        );
-        best_route = updated_best_route;
-        best_route_length = updated_best_route_length;
+    for k in 0..1000 {
+        let mut best_route: Vec<usize> = vec![];
+        let mut best_route_length: f32 = 0.0;
 
-        // Reset ants if n iterations not yet done:
-        if i < iterations - 1 {
+        // ========== iteration start ==================================================================
+
+        for i in 0..iterations {
+            // Move ants: Each ant 'finds' a path, starting at random city, that visits each city once only.
+            ants = move_ants(
+                ants.clone(),
+                n,
+                n_ants,
+                random_factor,
+                trails_matrix.clone(),
+                visibility_matrix.clone(),
+                alpha,
+                beta,
+            );
+
+            // Update pheromone trails;
+            trails_matrix = update_trails(
+                ants.clone(),
+                n_ants,
+                n,
+                evaporation,
+                q,
+                distance_matrix.clone(),
+                trails_matrix.clone(),
+            );
+
+            // Update best route found so far (and its length)
+            let (updated_best_route, updated_best_route_length) = update_best(
+                ants.clone(),
+                best_route.clone(),
+                best_route_length,
+                distance_matrix.clone(),
+            );
+            best_route = updated_best_route;
+            best_route_length = updated_best_route_length;
+
+            // Reset ants if n iterations not yet done:
+            if i < iterations - 1 {
+                for j in 0..n_ants {
+                    ants[j].reset(n, indices.clone());
+
+                    ants[j].visit(rng.gen_range(0..n));
+                }
+            }
+
+            // println!("best_route_length: {:?}", best_route_length);
+        }
+
+        if best_route_length != 2.099142 {
+            n_wrong += 1;
+            println!("incorrect solution: {:?}", best_route_length);
+        }
+
+        // ========== iteration end ==================================================================
+
+        // Reset ants if test iterations not yet done:
+        if k < 999 {
             for j in 0..n_ants {
                 ants[j].reset(n, indices.clone());
 
                 ants[j].visit(rng.gen_range(0..n));
             }
         }
-
-        println!("best_route_length: {:?}", best_route_length);
     }
 
+    println!("n times found wrong answer (1000 runs): {:?}", n_wrong);
 
-
-    // ========== iteration end ==================================================================
 
     // println!("best_route_length: {:?}", best_route_length);
     // println!("best_route: {:?}", best_route);
 
-    // ants[0].reset(n);
+    // for a in ants {
+    //     println!("{:?}", a);
+    // }
 
-    // DEBUG
-    // ants[0].visit(2);
-    // ants[0].visit(4);
-    // ants[0].visit(1);
-    // ants[1].visit(0);
-
-    // println!("Ant 0 has visited 3? {:?}", ants[0].has_visited(3));
-    // println!("Ant 0 has visited 4? {:?}", ants[0].has_visited(4));
-
-    for a in ants {
-        println!("{:?}", a);
-    }
-
-    for t in trails_matrix {
-        println!("{:?}", t);
-    }
+    // for t in trails_matrix {
+    //     println!("{:?}", t);
+    // }
 }
 
 // Create matrix of visibility of other points from all points, using distances in distance_matrix.

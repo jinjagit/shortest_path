@@ -3,6 +3,7 @@ mod utils;
 
 use itertools::Itertools;
 
+#[allow(dead_code)]
 pub fn brute_force(coords: Vec<(f32, f32)>) -> (Vec<(f32, f32)>, f32, u32) {
     let n = coords.len(); // Number of points provided
     let indices: Vec<usize> = utils::create_indices_vec_excl_start(n);
