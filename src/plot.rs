@@ -2,7 +2,9 @@ use plotters::prelude::*;
 
 #[allow(dead_code)]
 pub fn plot(
-    best_path: std::vec::Vec<(f32, f32)>, title: &str, filename: &str // mut worst_path: std::vec::Vec<(f32, f32)>,
+    best_path: std::vec::Vec<(f32, f32)>,
+    title: &str,
+    filename: &str, // mut worst_path: std::vec::Vec<(f32, f32)>,
 ) -> Result<(), Box<dyn std::error::Error>> {
     let file_path: &str = &(format!("images/{}", filename));
     let root = BitMapBackend::new(file_path, (640, 640)).into_drawing_area();

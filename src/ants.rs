@@ -35,7 +35,7 @@ impl Ant {
     }
 }
 
-pub fn ant_force(coords: Vec<(f32, f32)>) {
+pub fn ant_force(coords: Vec<(f32, f32)>) -> (Vec<usize>, f32, Vec<Vec<Vec<f32>>>) {
     let n: usize = coords.len(); // Number of points (cities)
     let mut ants: Vec<Ant> = vec![];
     let iterations: usize = 100; // Number of simulation iterations to run
@@ -73,9 +73,11 @@ pub fn ant_force(coords: Vec<(f32, f32)>) {
         ants[i].visit(rng.gen_range(0..n));
     }
 
-
     let mut best_route: Vec<usize> = vec![];
     let mut best_route_length: f32 = 0.0;
+
+    // Record of trails_matrices, for use in plotting png files for animation
+    let mut trails_record: Vec<Vec<Vec<f32>>> = vec![];
 
     // ========== iteration start ==================================================================
 
@@ -122,21 +124,26 @@ pub fn ant_force(coords: Vec<(f32, f32)>) {
             }
         }
 
-        // println!("best_route_length: {:?}", best_route_length);
+        if (i + 1) % 10 == 0 {
+            trails_record.push(trails_matrix.clone());
+        }
     }
 
     // ========== iteration end ==================================================================
 
-    println!("best_route_length: {:?}", best_route_length);
-    println!("best_route: {:?}", best_route);
+    // println!("best_route_length: {:?}", best_route_length);
+    // println!("best_route: {:?}", best_route);
 
-    let result: String = format!("{:.6}", best_route_length);
+    // let result: String = format!("{:.6}", best_route_length);
 
-    if result == "2.884553" {
-        println!("CORRECT")
-    } else {
-        println!("INCORRECT: {:?}% of shortest path", (best_route_length / 2.8845527) * 100.0);
-    }
+    // if result == "2.884553" {
+    //     println!("CORRECT")
+    // } else {
+    //     println!(
+    //         "INCORRECT: {:?}% of shortest path",
+    //         (best_route_length / 2.8845527) * 100.0
+    //     );
+    // }
 
     // for a in ants {
     //     println!("{:?}", a);
@@ -145,6 +152,8 @@ pub fn ant_force(coords: Vec<(f32, f32)>) {
     // for t in trails_matrix {
     //     println!("{:?}", t);
     // }
+
+    (best_route, best_route_length, trails_record)
 }
 
 // Create matrix of visibility of other points from all points, using distances in distance_matrix.

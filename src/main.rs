@@ -20,19 +20,33 @@ fn main() {
         (0.23, 0.6389),
         (0.05, 0.78),
         (0.63, 0.25),
-        (0.33, 0.415)
+        (0.33, 0.415),
     ];
 
-    let (best_path_coords, shortest, count): (Vec<(f32, f32)>, f32, u32) =
-        brute_force::brute_force(coords);
+    // let (best_path_coords, shortest, count): (Vec<(f32, f32)>, f32, u32) =
+    //     brute_force::brute_force(coords);
 
-    println!("permutations (n - 1)! = {:?}", count);
-    println!("shortest = {:?}", shortest);
+    // println!("permutations (n - 1)! = {:?}", count);
+    // println!("shortest = {:?}", shortest);
 
-    // Create chart of shortest path
-    plot::plot(best_path_coords, "Brute-force solution", "brute-force-10.png").unwrap();
+    // // Create chart of brute-force shortest path
+    // plot::plot(best_path_coords, "Brute-force solution", "brute-force-10.png").unwrap();
 
-    // ant_force(coords);
+    let (best_route, best_route_length, trails_record): (Vec<usize>, f32, Vec<Vec<Vec<f32>>>) = ant_force(coords);
+
+    println!("------------------ ACO -------------------");
+    println!("Best route: {:?}", best_route);
+    println!("Length = {:?}", best_route_length);
+
+    // println!("{:?}", trails_record);
+
+    for t in trails_record {
+        println!();
+
+        for u in t {
+            println!("{:?}", u);
+        }
+    }
 }
 
 pub fn create_points(n: usize) -> Vec<(f32, f32)> {
