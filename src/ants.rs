@@ -38,7 +38,7 @@ impl Ant {
 pub fn ant_force(coords: Vec<(f32, f32)>) {
     let n: usize = coords.len(); // Number of points (cities)
     let mut ants: Vec<Ant> = vec![];
-    let iterations: usize = 10; // Number of simulation iterations to run
+    let iterations: usize = 2; // Number of simulation iterations to run
 
     let c: f32 = 1.0; // The original value of all pheromone trails, at the start of the simulation
     let alpha: f32 = 1.0; // Controls the pheromone importance
@@ -46,7 +46,7 @@ pub fn ant_force(coords: Vec<(f32, f32)>) {
     let evaporation: f32 = 0.5; // The percent of pheromone evaporating every iteration
     let q: f32 = 500.0; // Info. about the total amount of pheromone left on the trail by each Ant
     let ant_factor: f32 = 0.8; // How many ants we'll use per city
-    let random_factor: f32 = 0.50; // Chance each ant will simply randomly choose next city to visit
+    let random_factor: f32 = 0.01; // Chance each ant will simply randomly choose next city to visit
 
     // Create matrix of distances between cities.
     let distance_matrix: Vec<Vec<f32>> = utils::distance_matrix(coords.clone(), n);
@@ -72,9 +72,6 @@ pub fn ant_force(coords: Vec<(f32, f32)>) {
         // Set each ant to start at a random city.
         ants[i].visit(rng.gen_range(0..n));
     }
-
-
-
 
     let mut n_wrong: i16 = 0;
 
@@ -148,7 +145,6 @@ pub fn ant_force(coords: Vec<(f32, f32)>) {
     }
 
     println!("n times found wrong answer (1000 runs): {:?}", n_wrong);
-
 
     // println!("best_route_length: {:?}", best_route_length);
     // println!("best_route: {:?}", best_route);
@@ -244,21 +240,38 @@ fn move_ants(
                         let numerator: f32 = trails_matrix[cur_loc][i].powf(alpha)
                             * visibility_matrix[cur_loc][i].powf(beta);
 
-                        probabilities[i] = numerator / pheromone;
+                        if numerator == 0.0 && pheromone == 0.0 {
+                            // Handle special case where probability would be NaN
+                            probabilities[i] = 1.0;
+                        } else {
+                            probabilities[i] = numerator / pheromone;
+                        }
                     }
                 }
+
+                // println!("probs: {:?}", probabilities);
 
                 // Use probablities vec to decide which city to visit next
                 let rand: f32 = rng.gen();
                 let mut total: f32 = 0.0;
+
+                let mut ok: bool = false;
 
                 for i in 0..n {
                     total += probabilities[i];
 
                     if total >= rand {
                         ant.visit(i);
+
+                        ok = true;
+
                         break; // Return here, if convert to fn
                     }
+                }
+
+                if ok == false {
+                    println!("NO city visited!!!");
+                    println!("probs: {:?}", probabilities);
                 }
             }
         }
