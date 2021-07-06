@@ -32,7 +32,9 @@ fn main() {
     // // Create chart of brute-force shortest path
     // plot::plot(best_path_coords, "Brute-force solution", "brute-force-10.png").unwrap();
 
-    let (best_route, best_route_length, trails_record): (Vec<usize>, f32, Vec<Vec<Vec<f32>>>) = ant_force(coords);
+    let (best_route, best_route_length, mut trails_record): (Vec<usize>, f32, Vec<Vec<Vec<f32>>>) = ant_force(coords);
+
+    trails_record = normalize_trails_record(trails_record.clone());
 
     println!("------------------ ACO -------------------");
     println!("Best route: {:?}", best_route);
@@ -60,4 +62,34 @@ pub fn create_points(n: usize) -> Vec<(f32, f32)> {
     }
 
     coords
+}
+
+fn normalize_matrix(mut matrix: Vec<Vec<f32>>) -> Vec<Vec<f32>> {
+    let n: usize = matrix.len();
+    let mut max: f32 = 0.0;
+
+    for i in 0..n {
+        for j in i + 1..n {
+            if matrix[i][j] > max {
+                max = matrix[i][j];
+            }
+        }
+    }
+
+    for i in 0..n {
+        for j in i + 1..n {
+            let norm: f32 = matrix[i][j] / max;
+            matrix[i][j] = norm;
+            matrix[j][i] = norm;
+        }
+    }
+
+    matrix
+}
+fn normalize_trails_record(mut record: Vec<Vec<Vec<f32>>>) -> Vec<Vec<Vec<f32>>> {
+    for i in 0..record.len() {
+        record[i] = normalize_matrix(record[i].clone());
+    }
+
+    record
 }
