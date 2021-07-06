@@ -77,6 +77,9 @@ pub fn ant_force(coords: Vec<(f32, f32)>) {
         ants[i].visit(rng.gen_range(0..n));
     }
 
+    let mut best_route: Vec<usize> = vec![];
+    let mut best_route_length: f32 = 0.0;
+
     // ========== iteration start ==================================================================
 
     // Move ants: Each ant 'finds' a path, starting at random city, that visits each city once only.
@@ -91,9 +94,20 @@ pub fn ant_force(coords: Vec<(f32, f32)>) {
         beta,
     );
 
-
     // updateTrails();
-    // updateBest();
+
+    // Update best route found so far (and its length)
+    let (updated_best_route, updated_best_route_length) = update_best(
+        ants.clone(),
+        best_route.clone(),
+        best_route_length,
+        distance_matrix.clone(),
+    );
+    best_route = updated_best_route;
+    best_route_length = updated_best_route_length;
+
+    println!("best_route_length: {:?}", best_route_length);
+    println!("best_route: {:?}", best_route);
 
     // break if n iterations done, else reset ants:
 
@@ -220,4 +234,30 @@ fn move_ants(
     }
 
     ants
+}
+
+fn update_best(
+    ants: Vec<Ant>,
+    mut best_route: Vec<usize>,
+    mut best_route_length: f32,
+    distance_matrix: Vec<Vec<f32>>,
+) -> (Vec<usize>, f32) {
+    // Pass in: ants.clone(), best_route, best_route_length, distance_matrix.clone()
+    // Return: (best_route, best_route_length)
+
+    if best_route == [] {
+        best_route = ants[0].route.clone();
+        best_route_length = ants[0].route_length(distance_matrix.clone());
+    }
+
+    for i in 0..ants.len() {
+        let route_length: f32 = ants[i].route_length(distance_matrix.clone());
+
+        if route_length < best_route_length {
+            best_route = ants[i].route.clone();
+            best_route_length = route_length;
+        }
+    }
+
+    (best_route, best_route_length)
 }
