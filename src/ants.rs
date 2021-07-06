@@ -47,7 +47,7 @@ pub fn ant_force(coords: Vec<(f32, f32)>) {
     let evaporation: f32 = 0.5; // The percent of pheromone evaporating every iteration
     let Q: f32 = 500.0; // Info. about the total amount of pheromone left on the trail by each Ant
     let ant_factor: f32 = 0.8; // How many ants we'll use per city
-    let random_factor: f32 = 1.1; // DEBUG: Currently set over 1 to test random city selection
+    let random_factor: f32 = 0.00; // DEBUG: Currently set to 0.0 to test random city selection
 
     // Create matrix of distances between cities.
     let distance_matrix: Vec<Vec<f32>> = utils::distance_matrix(coords.clone(), n);
@@ -56,7 +56,7 @@ pub fn ant_force(coords: Vec<(f32, f32)>) {
     // Create matrix of pheromone trails between cities, all set to initial value of c.
     let mut trails_matrix: Vec<Vec<f32>> = vec![vec![c; n]; n];
 
-    let probabilities: Vec<f32> = vec![0.0; n];
+    let mut probabilities: Vec<f32> = vec![0.0; n];
 
     // Set number of ants. Always rounds down.
     let n_ants: usize = (n as f32 * ant_factor) as usize;
@@ -90,14 +90,76 @@ pub fn ant_force(coords: Vec<(f32, f32)>) {
             let ant = &mut ants[j];
 
             if r < random_factor {
-                // yes: randomly select a city not yet visited
-                // DEBUG: Currently always true, as random factor set to > 1.0
+                // Randomly select a city not yet visited
                 print!("YES ");
 
                 ant.visit(ant.not_visited[rng.gen_range(0..n - 1 - i)]);
             } else {
-                // no: select using distance & pheromone weightings
+                // Select city using distance & pheromone weightings
                 print!("no ");
+
+                // public void calculateProbabilities(Ant ant) {
+                //     int i = ant.trail[currentIndex];
+                let cur_loc: usize = ant.route[ant.route.len() - 1];
+                //     double pheromone = 0.0;
+                let mut pheromone: f32 = 0.0;
+                //     for (int l = 0; l < numberOfCities; l++) {
+                //         if (!ant.visited(l)){
+                //             pheromone
+                //               += Math.pow(trails[i][l], alpha) * Math.pow(1.0 / graph[i][l], beta);
+                //         }
+                //     }
+                for i in 0..n {
+                    if ant.visited[i] == false {
+                        pheromone += trails_matrix[cur_loc][i].powf(alpha)
+                            * visibility_matrix[cur_loc][i].powf(beta);
+                    }
+                }
+
+                //     for (int j = 0; j < numberOfCities; j++) {
+                //         if (ant.visited(j)) {
+                //             probabilities[j] = 0.0;
+                //         } else {
+                //             double numerator
+                //               = Math.pow(trails[i][j], alpha) * Math.pow(1.0 / graph[i][j], beta);
+                //             probabilities[j] = numerator / pheromone;
+                //         }
+                //     }
+                // }
+
+                for i in 0..n {
+                    if ant.visited[i] == true {
+                        probabilities[i] = 0.0;
+                    } else {
+                        let numerator: f32 = trails_matrix[cur_loc][i].powf(alpha)
+                            * visibility_matrix[cur_loc][i].powf(beta);
+
+                        probabilities[i] = numerator / pheromone;
+                    }
+                }
+
+                // Use probablities vec to decide which city to visit next
+
+                // double r = random.nextDouble();
+                // double total = 0;
+                // for (int i = 0; i < numberOfCities; i++) {
+                //     total += probabilities[i];
+                //     if (total >= r) {
+                //         return i;
+                //     }
+                // }
+
+                let rand: f32 = rng.gen();
+                let mut total: f32 = 0.0;
+
+                for i in 0..n {
+                    total += probabilities[i];
+
+                    if total >= rand {
+                        ant.visit(i);
+                        break; // Return here, if convert to fn
+                    }
+                }
             }
         }
 
