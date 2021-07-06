@@ -16,18 +16,23 @@ fn main() {
         (0.44, 0.77),
         (0.3456, 0.7654),
         (0.111, 0.222),
+        (0.9, 0.876),
+        (0.23, 0.6389),
+        (0.05, 0.78),
+        (0.63, 0.25),
+        (0.33, 0.415)
     ];
 
-    // let (best_path_coords, shortest, count): (Vec<(f32, f32)>, f32, u32) =
-    //     brute_force::brute_force(coords);
+    let (best_path_coords, shortest, count): (Vec<(f32, f32)>, f32, u32) =
+        brute_force::brute_force(coords);
 
-    // println!("permutations (n - 1)! = {:?}", count);
-    // println!("shortest = {:?}", shortest);
+    println!("permutations (n - 1)! = {:?}", count);
+    println!("shortest = {:?}", shortest);
 
-    // // Create chart of shortest path
-    // plot::plot(best_path_coords).unwrap();
+    // Create chart of shortest path
+    plot::plot(best_path_coords).unwrap();
 
-    ant_force(coords);
+    // ant_force(coords);
 }
 
 pub fn create_points(n: usize) -> Vec<(f32, f32)> {
