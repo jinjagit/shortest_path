@@ -18,10 +18,6 @@ impl Ant {
         self.not_visited.retain(|x| *x != city);
     }
 
-    fn has_visited(&self, city: usize) -> bool {
-        return self.visited[city];
-    }
-
     fn route_length(&self, distance_matrix: Vec<Vec<f32>>) -> f32 {
         let mut distance: f32 = distance_matrix[self.route[self.route.len() - 1]][self.route[0]];
 
@@ -32,15 +28,17 @@ impl Ant {
         distance
     }
 
-    fn reset(&mut self, n: usize) {
+    fn reset(&mut self, n: usize, indices: Vec<usize>) {
         self.route = vec![];
         self.visited = vec![false; n];
+        self.not_visited = indices;
     }
 }
 
 pub fn ant_force(coords: Vec<(f32, f32)>) {
     let n: usize = coords.len(); // Number of points (cities)
     let mut ants: Vec<Ant> = vec![];
+    let iterations: usize = 5; // Number of simulation iterations to run
 
     let c: f32 = 1.0; // The original value of all pheromone trails, at the start of the simulation
     let alpha: f32 = 1.0; // Controls the pheromone importance
@@ -82,36 +80,58 @@ pub fn ant_force(coords: Vec<(f32, f32)>) {
 
     // ========== iteration start ==================================================================
 
-    // Move ants: Each ant 'finds' a path, starting at random city, that visits each city once only.
-    ants = move_ants(
-        ants.clone(),
-        n,
-        n_ants,
-        random_factor,
-        trails_matrix.clone(),
-        visibility_matrix.clone(),
-        alpha,
-        beta,
-    );
+    for i in 0..iterations {
+        // Move ants: Each ant 'finds' a path, starting at random city, that visits each city once only.
+        ants = move_ants(
+            ants.clone(),
+            n,
+            n_ants,
+            random_factor,
+            trails_matrix.clone(),
+            visibility_matrix.clone(),
+            alpha,
+            beta,
+        );
 
-    // updateTrails();
+        // Update pheromone trails;
+        trails_matrix = update_trails(
+            ants.clone(),
+            n_ants,
+            n,
+            evaporation,
+            q,
+            distance_matrix.clone(),
+            trails_matrix.clone(),
+        );
 
-    // Update best route found so far (and its length)
-    let (updated_best_route, updated_best_route_length) = update_best(
-        ants.clone(),
-        best_route.clone(),
-        best_route_length,
-        distance_matrix.clone(),
-    );
-    best_route = updated_best_route;
-    best_route_length = updated_best_route_length;
+        // Update best route found so far (and its length)
+        let (updated_best_route, updated_best_route_length) = update_best(
+            ants.clone(),
+            best_route.clone(),
+            best_route_length,
+            distance_matrix.clone(),
+        );
+        best_route = updated_best_route;
+        best_route_length = updated_best_route_length;
 
-    println!("best_route_length: {:?}", best_route_length);
-    println!("best_route: {:?}", best_route);
+        // Reset ants if n iterations not yet done:
+        if i < iterations - 1 {
+            for j in 0..n_ants {
+                ants[j].reset(n, indices.clone());
 
-    // break if n iterations done, else reset ants:
+                ants[j].visit(rng.gen_range(0..n));
+            }
+        }
+
+        println!("best_route_length: {:?}", best_route_length);
+    }
+
+
 
     // ========== iteration end ==================================================================
+
+    // println!("best_route_length: {:?}", best_route_length);
+    // println!("best_route: {:?}", best_route);
 
     // ants[0].reset(n);
 
@@ -126,6 +146,10 @@ pub fn ant_force(coords: Vec<(f32, f32)>) {
 
     for a in ants {
         println!("{:?}", a);
+    }
+
+    for t in trails_matrix {
+        println!("{:?}", t);
     }
 }
 
@@ -236,15 +260,52 @@ fn move_ants(
     ants
 }
 
+// Update matrix of pheromone trails after each iteration of simulation
+fn update_trails(
+    ants: Vec<Ant>,
+    n_ants: usize,
+    n: usize,
+    evaporation: f32,
+    q: f32,
+    distance_matrix: Vec<Vec<f32>>,
+    mut trails_matrix: Vec<Vec<f32>>,
+) -> Vec<Vec<f32>> {
+    // Evaporate (reduce) all pheromone trails by evaporation factor
+    for i in 0..n {
+        for j in 0..n {
+            trails_matrix[i][j] *= evaporation;
+        }
+    }
+
+    // Strengthen pheromone trails relative to each ant's route, weighted by each route's distance
+    // Shorter total route distance increases the pheromone contributions from the respective ant.
+    for i in 0..n_ants {
+        let contribution: f32 = q / ants[i].route_length(distance_matrix.clone());
+
+        for j in 0..n - 1 {
+            let start: usize = ants[i].route[j];
+            let end: usize = ants[i].route[j + 1];
+
+            trails_matrix[start][end] += contribution;
+            trails_matrix[end][start] += contribution;
+        }
+
+        let start: usize = ants[i].route[n - 1];
+        let end: usize = ants[i].route[0];
+
+        trails_matrix[start][end] += contribution;
+        trails_matrix[end][start] += contribution;
+    }
+
+    trails_matrix
+}
+
 fn update_best(
     ants: Vec<Ant>,
     mut best_route: Vec<usize>,
     mut best_route_length: f32,
     distance_matrix: Vec<Vec<f32>>,
 ) -> (Vec<usize>, f32) {
-    // Pass in: ants.clone(), best_route, best_route_length, distance_matrix.clone()
-    // Return: (best_route, best_route_length)
-
     if best_route == [] {
         best_route = ants[0].route.clone();
         best_route_length = ants[0].route_length(distance_matrix.clone());
