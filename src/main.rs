@@ -2,6 +2,7 @@ mod ants;
 mod brute_force;
 mod plot;
 mod plot_trails;
+mod apng;
 
 use ants::ant_force;
 use rand::prelude::*;
@@ -39,23 +40,15 @@ fn main() {
     println!("Best route: {:?}", best_route);
     println!("Length = {:?}", best_route_length);
 
+    println!("\nEncoding {} PNG files:", trails_record.len());
+
     trails_record = normalize_trails_record(trails_record.clone());
 
-    plot_trails_record(coords, trails_record.clone());
+    plot_trails_record(coords, trails_record.clone(), best_route.clone());
 
-    // println!("{:?}", trails_record);
+    println!("success");
 
-    // plot_trails::plot_trails(coords.clone(), "test of 10.0 line weight", "test.png").unwrap();
-
-    // for t in trails_record {
-    //     println!();
-
-    //     let (u, _) = t;
-
-    //     for w in u {
-    //         println!("{:?}", w);
-    //     }
-    // }
+    apng::create_apng();
 }
 
 pub fn create_points(n: usize) -> Vec<(f32, f32)> {
@@ -103,13 +96,17 @@ fn normalize_trails_record(mut record: Vec<(Vec<Vec<f32>>, usize)>) -> Vec<(Vec<
     record
 }
 
-fn plot_trails_record(coords: Vec<(f32, f32)>, record: Vec<(Vec<Vec<f32>>, usize)>) {
+fn plot_trails_record(coords: Vec<(f32, f32)>, record: Vec<(Vec<Vec<f32>>, usize)>, mut best_route: Vec<usize>) {
     for i in 0..record.len() {
         let (matrix, iter) = record[i].clone();
         let file_path: &str = &(format!("images/series_1/ants_{}_{}.png", coords.len(), i));
         let title: &str = &(format!("ACO - points: {}, iteration: {}", coords.len(), iter));
 
-        plot_trails::plot_trails(coords.clone(), title, file_path, matrix).unwrap();
+        if i < record.len() - 1 {
+            plot_trails::plot_trails(coords.clone(), title, file_path, matrix.clone(), vec![]).unwrap();
+        } else {
+            plot_trails::plot_trails(coords.clone(), title, file_path, matrix, best_route.clone()).unwrap();
+        }
     }
 
 }

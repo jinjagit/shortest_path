@@ -11,6 +11,8 @@ plotters = "^0.3.1"
 itertools = "^0.10.1"
 rand = "0.8.4"
 criterion = "0.3"
+apng = "0.2.0"
+image = "0.22.5"
 
 [[bench]]
 name = "brute_matrix"

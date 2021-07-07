@@ -6,6 +6,7 @@ pub fn plot_trails(
     title: &str,
     file_path: &str,
     matrix: Vec<Vec<f32>>,
+    best_route: Vec<usize>,
 ) -> Result<(), Box<dyn std::error::Error>> {
     let file_path: &str = &(format!("{}", file_path));
     let root = BitMapBackend::new(file_path, (640, 640)).into_drawing_area();
@@ -26,13 +27,26 @@ pub fn plot_trails(
             line_coords.push(coords[i]);
             line_coords.push(coords[j]);
 
-            let mut weight: f64 = 10.0;
-            if matrix[i][j] < 0.7 {
-                weight = matrix[i][j] as f64 * 3.0;
-            }
+            let mut weight: f64 = matrix[i][j] as f64;
+            // if matrix[i][j] < 0.75 {
+            //     weight = matrix[i][j] as f64 * 3.0;
+            // }
 
             chart.draw_series(LineSeries::new(line_coords, &BLUE.mix(weight)))?;
         }
+    }
+
+    if best_route != [] {
+        // Draw line series
+        let mut best_route_coords: Vec<(f32, f32)> = vec![];
+        for i in 0..best_route.len() {
+            best_route_coords.push(coords[best_route[i]]);
+        }
+
+        best_route_coords.push(coords[best_route[0]]);
+
+        // mix == weight, 10.0 max, 0.3 min viable weight
+        chart.draw_series(LineSeries::new(best_route_coords, &GREEN.mix(10.0)))?;
     }
 
     // Draw point series
