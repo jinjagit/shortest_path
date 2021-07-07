@@ -35,7 +35,7 @@ impl Ant {
     }
 }
 
-pub fn ant_force(coords: Vec<(f32, f32)>) -> (Vec<usize>, f32, Vec<Vec<Vec<f32>>>) {
+pub fn ant_force(coords: Vec<(f32, f32)>) -> (Vec<usize>, f32, Vec<(Vec<Vec<f32>>, usize)>) {
     let n: usize = coords.len(); // Number of points (cities)
     let mut ants: Vec<Ant> = vec![];
     let iterations: usize = 100; // Number of simulation iterations to run
@@ -77,7 +77,7 @@ pub fn ant_force(coords: Vec<(f32, f32)>) -> (Vec<usize>, f32, Vec<Vec<Vec<f32>>
     let mut best_route_length: f32 = 0.0;
 
     // Record of trails_matrices, for use in plotting png files for animation
-    let mut trails_record: Vec<Vec<Vec<f32>>> = vec![];
+    let mut trails_record: Vec<(Vec<Vec<f32>>, usize)> = vec![];
 
     // ========== iteration start ==================================================================
 
@@ -125,7 +125,7 @@ pub fn ant_force(coords: Vec<(f32, f32)>) -> (Vec<usize>, f32, Vec<Vec<Vec<f32>>
         }
 
         if (i + 1) % 10 == 0 {
-            trails_record.push(trails_matrix.clone());
+            trails_record.push((trails_matrix.clone(), i + 1));
         }
     }
 

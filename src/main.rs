@@ -1,6 +1,7 @@
 mod ants;
 mod brute_force;
 mod plot;
+mod plot_trails;
 
 use ants::ant_force;
 use rand::prelude::*;
@@ -32,23 +33,29 @@ fn main() {
     // // Create chart of brute-force shortest path
     // plot::plot(best_path_coords, "Brute-force solution", "brute-force-10.png").unwrap();
 
-    let (best_route, best_route_length, mut trails_record): (Vec<usize>, f32, Vec<Vec<Vec<f32>>>) = ant_force(coords);
-
-    trails_record = normalize_trails_record(trails_record.clone());
+    let (best_route, best_route_length, mut trails_record): (Vec<usize>, f32, Vec<(Vec<Vec<f32>>, usize)>) = ant_force(coords.clone());
 
     println!("------------------ ACO -------------------");
     println!("Best route: {:?}", best_route);
     println!("Length = {:?}", best_route_length);
 
+    trails_record = normalize_trails_record(trails_record.clone());
+
+    plot_trails_record(coords, trails_record.clone());
+
     // println!("{:?}", trails_record);
 
-    for t in trails_record {
-        println!();
+    // plot_trails::plot_trails(coords.clone(), "test of 10.0 line weight", "test.png").unwrap();
 
-        for u in t {
-            println!("{:?}", u);
-        }
-    }
+    // for t in trails_record {
+    //     println!();
+
+    //     let (u, _) = t;
+
+    //     for w in u {
+    //         println!("{:?}", w);
+    //     }
+    // }
 }
 
 pub fn create_points(n: usize) -> Vec<(f32, f32)> {
@@ -86,10 +93,23 @@ fn normalize_matrix(mut matrix: Vec<Vec<f32>>) -> Vec<Vec<f32>> {
 
     matrix
 }
-fn normalize_trails_record(mut record: Vec<Vec<Vec<f32>>>) -> Vec<Vec<Vec<f32>>> {
+fn normalize_trails_record(mut record: Vec<(Vec<Vec<f32>>, usize)>) -> Vec<(Vec<Vec<f32>>, usize)> {
     for i in 0..record.len() {
-        record[i] = normalize_matrix(record[i].clone());
+        let (matrix, iter) = record[i].clone();
+
+        record[i] = (normalize_matrix(matrix.clone()), iter);
     }
 
     record
+}
+
+fn plot_trails_record(coords: Vec<(f32, f32)>, record: Vec<(Vec<Vec<f32>>, usize)>) {
+    for i in 0..record.len() {
+        let (matrix, iter) = record[i].clone();
+        let file_path: &str = &(format!("images/series_1/ants_{}_{}.png", coords.len(), i));
+        let title: &str = &(format!("ACO - points: {}, iteration: {}", coords.len(), iter));
+
+        plot_trails::plot_trails(coords.clone(), title, file_path, matrix).unwrap();
+    }
+
 }
