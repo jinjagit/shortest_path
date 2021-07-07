@@ -32,7 +32,7 @@ pub fn plot_trails(
             //     weight = matrix[i][j] as f64 * 3.0;
             // }
 
-            chart.draw_series(LineSeries::new(line_coords, &BLUE.mix(weight)))?;
+            chart.draw_series(LineSeries::new(line_coords, &MAGENTA.mix(weight)))?;
         }
     }
 
@@ -46,7 +46,7 @@ pub fn plot_trails(
         best_route_coords.push(coords[best_route[0]]);
 
         // mix == weight, 10.0 max, 0.3 min viable weight
-        chart.draw_series(LineSeries::new(best_route_coords, &GREEN.mix(10.0)))?;
+        chart.draw_series(LineSeries::new(best_route_coords, &BLUE.mix(10.0)))?;
     }
 
     // Draw point series
