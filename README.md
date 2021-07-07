@@ -72,7 +72,7 @@ In practice, solving for any more than 12 points is unsuitable for benchmarking 
 
 ____________________________________________________________________________
 
-## Ant Colony Approximation
+## Ant Colony Optimization
 
 In progress...
 
@@ -82,7 +82,7 @@ Resources:
 
 So far, I have produced test plots for solutions / approximations for 10 points:
 
-|          brute-force           |    ant-colony approximation    |
+|          brute-force           |    ant-colony optimization    |
 |:------------------------------:|:------------------------------:|
 |![](images/brute-force-10.png)  |![](images/apng/animation_1.png)|
 
