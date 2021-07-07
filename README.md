@@ -82,9 +82,9 @@ Resources:
 
 So far, I have produced test plots for solutions / approximations for 10 points:
 
-|        brute-force             |      ant-colony approximation     |
-|:------------------------------:|:-------------------------:|
-|![](images/brute-force-10.png)  |  ![](images/apng/animation_1.png)|
+|          brute-force           |    ant-colony approximation    |
+|:------------------------------:|:------------------------------:|
+|![](images/brute-force-10.png)  |![](images/apng/animation_1.png)|
 
 ____________________________________________________________________________
 
