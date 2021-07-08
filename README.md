@@ -74,7 +74,7 @@ ____________________________________________________________________________
 
 ## Ant Colony Optimization
 
-I based my Rust code on [these Java snippets, by Baeldung,](https://www.baeldung.com/java-ant-colony-optimization), with some small implementation changes + accommodations of differences between Rust & Java.
+I based my Rust code on [these Java snippets, by Baeldung](https://www.baeldung.com/java-ant-colony-optimization), with some small implementation changes + accommodations of differences between Rust & Java.
 
 So far, I have produced test plots for solutions / approximations for 10 points:
 
@@ -86,7 +86,7 @@ And a rather remarkable approximation for 60 points (which has approximately as 
 
 ![](images/apng/animation_2.png)
 
-TODO: Write random walk approximation, that returns best, worst and average path lengths for n random walks through each point once (and final return to origin point), for comparison with the ACO approximation results, when n of points too high for brute-force solutution (pretty much anything > 13 points)
+TODO: Write random walk approximation, that returns best, worst and average path lengths for n random walks through each point once (and final return to origin point), for comparison with the ACO approximation results, when n of points too high for brute-force solutution (pretty much anything > 13 points).
 ____________________________
 
 ________________________________________________

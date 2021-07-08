@@ -1,3 +1,6 @@
+// Based on these Java snippets, by Baeldung: https://www.baeldung.com/java-ant-colony-optimization,
+// with some small implementation changes + accommodations of differences between Rust & Java.
+
 #[path = "utils.rs"]
 mod utils;
 
