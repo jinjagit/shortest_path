@@ -11,6 +11,7 @@ struct Ant {
     not_visited: Vec<usize>,
 }
 
+#[allow(dead_code)]
 impl Ant {
     fn visit(&mut self, city: usize) {
         self.route.push(city);
@@ -35,6 +36,7 @@ impl Ant {
     }
 }
 
+#[allow(dead_code)]
 pub fn random_walks(coords: Vec<(f32, f32)>) -> Vec<usize> {
     let n: usize = coords.len(); // Number of points (cities)
     let mut ants: Vec<Ant> = vec![];

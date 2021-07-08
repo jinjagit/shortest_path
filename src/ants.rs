@@ -83,8 +83,6 @@ pub fn ant_force(coords: Vec<(f32, f32)>) -> (Vec<usize>, f32, Vec<(Vec<Vec<f32>
     // Record of trails_matrices, for use in plotting png files for animation
     let mut trails_record: Vec<(Vec<Vec<f32>>, usize)> = vec![];
 
-    // ========== iteration start ==================================================================
-
     for i in 0..iterations {
         // Move ants: Each ant 'finds' a path, starting at random city, that visits each city once only.
         ants = move_ants(
@@ -128,40 +126,12 @@ pub fn ant_force(coords: Vec<(f32, f32)>) -> (Vec<usize>, f32, Vec<(Vec<Vec<f32>
             }
         }
 
-        // if (i + 1) % 50 == 0 {
-        //     trails_record.push((trails_matrix.clone(), i + 1));
-        // }
-
         for j in 0..snapshots.len() {
             if (i + 1) == snapshots[j] {
                 trails_record.push((trails_matrix.clone(), i + 1));
             }
         }
     }
-
-    // ========== iteration end ==================================================================
-
-    // println!("best_route_length: {:?}", best_route_length);
-    // println!("best_route: {:?}", best_route);
-
-    // let result: String = format!("{:.6}", best_route_length);
-
-    // if result == "2.884553" {
-    //     println!("CORRECT")
-    // } else {
-    //     println!(
-    //         "INCORRECT: {:?}% of shortest path",
-    //         (best_route_length / 2.8845527) * 100.0
-    //     );
-    // }
-
-    // for a in ants {
-    //     println!("{:?}", a);
-    // }
-
-    // for t in trails_matrix {
-    //     println!("{:?}", t);
-    // }
 
     (best_route, best_route_length, trails_record)
 }
@@ -226,8 +196,6 @@ fn move_ants(
             } else {
                 // Select city using distance & pheromone weightings
 
-                // public void calculateProbabilities(Ant ant) {
-
                 // Calulate total pheromone value, based on cities not yet visited
                 let cur_loc: usize = ant.route[ant.route.len() - 1];
                 let mut pheromone: f32 = 0.0;
@@ -255,8 +223,6 @@ fn move_ants(
                         }
                     }
                 }
-
-                // println!("probs: {:?}", probabilities);
 
                 // Use probablities vec to decide which city to visit next
                 let rand: f32 = rng.gen();

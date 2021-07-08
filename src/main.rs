@@ -4,31 +4,18 @@ mod brute_force;
 mod plot;
 mod plot_trails;
 mod random;
-mod utils;
 
 use ants::ant_force;
 use rand::prelude::*;
 
-use crate::random::random_walks;
+// use crate::random::random_walks;
 
 fn main() {
     // Define coords to use for line series & points
     let n = 60; // Number of points we want
     let coords: Vec<(f32, f32)> = create_points(n);
 
-    // let coords: Vec<(f32, f32)> = vec![
-    //     (0.75, 0.32),
-    //     (0.154, 0.83),
-    //     (0.44, 0.77),
-    //     (0.3456, 0.7654),
-    //     (0.111, 0.222),
-    //     (0.9, 0.876),
-    //     (0.23, 0.6389),
-    //     (0.05, 0.78),
-    //     (0.63, 0.25),
-    //     (0.33, 0.415),
-    // ];
-
+    // ------------------- Brute-force --------------------------
     // let (best_path_coords, shortest, count): (Vec<(f32, f32)>, f32, u32) =
     //     brute_force::brute_force(coords);
 
@@ -38,12 +25,14 @@ fn main() {
     // // Create chart of brute-force shortest path
     // plot::plot(best_path_coords, "Brute-force solution", "brute-force-10.png").unwrap();
 
-    let worst_route: Vec<usize> = random_walks(coords.clone());
+    // ------------------- Random-walks --------------------------
+    // let worst_route: Vec<usize> = random_walks(coords.clone());
 
-    let mut worst_route_coords: Vec<(f32, f32)> = reorder_coords(coords.clone(), worst_route.clone());
-    worst_route_coords.push(coords[worst_route[0]]);
-    plot::plot(worst_route_coords, "Worst random walk of 10,080", "random-60.png").unwrap();
+    // let mut worst_route_coords: Vec<(f32, f32)> = reorder_coords(coords.clone(), worst_route.clone());
+    // worst_route_coords.push(coords[worst_route[0]]);
+    // plot::plot(worst_route_coords, "Worst random walk of 10,080", "random-60.png").unwrap();
 
+    // ---------------------- ACO --------------------------------
     let (best_route, best_route_length, mut trails_record): (
         Vec<usize>,
         f32,
