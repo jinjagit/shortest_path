@@ -1,11 +1,15 @@
 mod ants;
+mod apng;
 mod brute_force;
 mod plot;
 mod plot_trails;
-mod apng;
+mod random;
+mod utils;
 
 use ants::ant_force;
 use rand::prelude::*;
+
+use crate::random::random_walks;
 
 fn main() {
     // Define coords to use for line series & points
@@ -34,7 +38,17 @@ fn main() {
     // // Create chart of brute-force shortest path
     // plot::plot(best_path_coords, "Brute-force solution", "brute-force-10.png").unwrap();
 
-    let (best_route, best_route_length, mut trails_record): (Vec<usize>, f32, Vec<(Vec<Vec<f32>>, usize)>) = ant_force(coords.clone());
+    let worst_route: Vec<usize> = random_walks(coords.clone());
+
+    let mut worst_route_coords: Vec<(f32, f32)> = reorder_coords(coords.clone(), worst_route.clone());
+    worst_route_coords.push(coords[worst_route[0]]);
+    plot::plot(worst_route_coords, "Worst random walk of 10,080", "random-60.png").unwrap();
+
+    let (best_route, best_route_length, mut trails_record): (
+        Vec<usize>,
+        f32,
+        Vec<(Vec<Vec<f32>>, usize)>,
+    ) = ant_force(coords.clone());
 
     println!("------------------ ACO -------------------");
     println!("Best route: {:?}", best_route);
@@ -96,17 +110,32 @@ fn normalize_trails_record(mut record: Vec<(Vec<Vec<f32>>, usize)>) -> Vec<(Vec<
     record
 }
 
-fn plot_trails_record(coords: Vec<(f32, f32)>, record: Vec<(Vec<Vec<f32>>, usize)>, best_route: Vec<usize>) {
+fn plot_trails_record(
+    coords: Vec<(f32, f32)>,
+    record: Vec<(Vec<Vec<f32>>, usize)>,
+    best_route: Vec<usize>,
+) {
     for i in 0..record.len() {
         let (matrix, iter) = record[i].clone();
         let file_path: &str = &(format!("images/series_2/ants_{}_{}.png", coords.len(), i));
         let title: &str = &(format!("ACO - points: {}, iteration: {}", coords.len(), iter));
 
         if i < record.len() - 1 {
-            plot_trails::plot_trails(coords.clone(), title, file_path, matrix.clone(), vec![]).unwrap();
+            plot_trails::plot_trails(coords.clone(), title, file_path, matrix.clone(), vec![])
+                .unwrap();
         } else {
-            plot_trails::plot_trails(coords.clone(), title, file_path, matrix, best_route.clone()).unwrap();
+            plot_trails::plot_trails(coords.clone(), title, file_path, matrix, best_route.clone())
+                .unwrap();
         }
     }
+}
 
+pub fn reorder_coords(coords: Vec<(f32, f32)>, best_path: Vec<usize>) -> Vec<(f32, f32)> {
+    let mut best_path_coords: Vec<(f32, f32)> = vec![];
+
+    for e in best_path {
+        best_path_coords.push(coords[e]);
+    }
+
+    best_path_coords
 }

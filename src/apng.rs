@@ -34,7 +34,9 @@ pub fn create_apng(n: usize) {
     for image in png_images.iter() {
         i += 1;
         let mut t = 1;
-        if i == 10 { t = 5; }
+        if i == 10 {
+            t = 5;
+        }
 
         let frame = Frame {
             delay_num: Some(t),

@@ -211,9 +211,8 @@ fn move_ants(
     let mut rng = rand::thread_rng();
     let mut probabilities: Vec<f32> = vec![0.0; n];
 
+    // n - 1 loops, as we have already selected start city, and will end at start
     for i in 0..n - 1 {
-        // n - 1 loops, as we have already selected start city, and will end at start
-
         for j in 0..n_ants {
             // Select city to visit next
 
