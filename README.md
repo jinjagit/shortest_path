@@ -1,6 +1,6 @@
 # shortest_path
 
-Investigating the 'travelling sales-person' problem.
+Investigating the 'travelling sales-person' problem, by comparing brute-force, random-walk, and ant-colony optimization approaches.
 
 Starting point: [plot repo](https://github.com/jinjagit/plot) to use as a vizualization tool for paths found by brute force & approximation algos.
 
