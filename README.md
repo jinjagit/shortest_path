@@ -86,8 +86,19 @@ And a rather remarkable approximation for 60 points (which has approximately as 
 
 ![](images/apng/animation_2.png)
 
-TODO: Write random walk approximation, that returns best, worst and average path lengths for n random walks through each point once (and final return to origin point), for comparison with the ACO approximation results, when n of points too high for brute-force solutution (pretty much anything > 13 points).
+## Comparison with random-walks:
 
+We can use a random-walk approximation, that returns best, worst and average path lengths for n random walks through each point once (and final return to origin point), for comparison with the ACO approximation results, when n of points too high for brute-force solutution (pretty much anything > 13 points).
+
+For the 60 points plotted, above, the ACO gave a shortest path approximation with length: 6.1643267
+
+The random-walk approach gave the following results:
+- n of random routes: 10,080
+- best route length: 28.150362
+- worst route length: 35.783714
+- average route length: 31.49291
+
+Thus, the ACO found a path about 5 times shorter than would, on average, be randomly found.
 ____________________________________________________________________________
 
 ## Benchmarks:
