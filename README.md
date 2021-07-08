@@ -86,6 +86,10 @@ So far, I have produced test plots for solutions / approximations for 10 points:
 |:------------------------------:|:------------------------------:|
 |![](images/brute-force-10.png)  |![](images/apng/animation_1.png)|
 
+And a rather remarkable approximation for 60 points (which has approximately as many permutations of unique paths as the number of atoms in the observable universe (10^80), so really not a candidtae for a brute-force apporach!). This approximation ran in less than 2 seconds, on a single thread:
+
+![](images/apng/animation_2.png)
+
 ____________________________________________________________________________
 
 ## Benchmarks:

@@ -27,7 +27,7 @@ pub fn plot_trails(
             line_coords.push(coords[i]);
             line_coords.push(coords[j]);
 
-            let mut weight: f64 = matrix[i][j] as f64;
+            let weight: f64 = matrix[i][j] as f64;
             // if matrix[i][j] < 0.75 {
             //     weight = matrix[i][j] as f64 * 3.0;
             // }

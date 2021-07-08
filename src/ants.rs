@@ -38,7 +38,8 @@ impl Ant {
 pub fn ant_force(coords: Vec<(f32, f32)>) -> (Vec<usize>, f32, Vec<(Vec<Vec<f32>>, usize)>) {
     let n: usize = coords.len(); // Number of points (cities)
     let mut ants: Vec<Ant> = vec![];
-    let iterations: usize = 100; // Number of simulation iterations to run
+    let iterations: usize = 1024; // Number of simulation iterations to run
+    let snapshots: Vec<usize> = vec![2, 4, 8, 16, 32, 64, 128, 256, 512, 1024]; // Iterations to plot
 
     let c: f32 = 1.0; // The original value of all pheromone trails, at the start of the simulation
     let alpha: f32 = 1.0; // Controls the pheromone importance
@@ -124,8 +125,14 @@ pub fn ant_force(coords: Vec<(f32, f32)>) -> (Vec<usize>, f32, Vec<(Vec<Vec<f32>
             }
         }
 
-        if (i + 1) % 10 == 0 {
-            trails_record.push((trails_matrix.clone(), i + 1));
+        // if (i + 1) % 50 == 0 {
+        //     trails_record.push((trails_matrix.clone(), i + 1));
+        // }
+
+        for j in 0..snapshots.len() {
+            if (i + 1) == snapshots[j] {
+                trails_record.push((trails_matrix.clone(), i + 1));
+            }
         }
     }
 
